@@ -36,3 +36,7 @@ nosetests.xml
 
 # Trial
 _trial_temp/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
