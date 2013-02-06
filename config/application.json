@@ -1,0 +1,7 @@
+{
+    "name": "BlackMamba",
+    "description": "Black Mamba is a small and simple blog system that uses Mamba as backend framework",
+    "version": "1.0",
+    "port": 1936,
+    "logfile": null
+}
