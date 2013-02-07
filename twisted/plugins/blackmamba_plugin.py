@@ -6,7 +6,7 @@ from twisted.application.service import IServiceMaker
 from twisted.application import internet
 
 from mamba.utils import config
-from BlackMamba import MambaApplicationFactory
+from blackmamba import MambaApplicationFactory
 
 settings = config.Application('config/application.json')
 
@@ -19,7 +19,7 @@ class Options(usage.Options):
 
 class MambaServiceMaker(object):
     implements(IServiceMaker, IPlugin)
-    tapname = settings.name
+    tapname = settings.name.lower()
     description = settings.description
     options = Options
 
