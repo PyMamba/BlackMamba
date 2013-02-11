@@ -1,0 +1,91 @@
+{% extends "root_page.html" %}
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{{ super() }}
+{% endblock %}
+{% block body %}
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="brand" href="/">Mamba</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#download">Download</a></li>
+            <li><a href="#docs">Documentation</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mamba header">
+    <div class="container">
+      <div class="container-fluid">
+        <div class="row-fluid">
+          <div class="span2">
+            <img src="assets/logo.png" />
+          </div>
+          <div class="span10">
+            <h1>Mamba</h1>
+            <p>High level and small asynchronous web applications framework and WSGI web server</p>
+          </div>
+        </div>
+      </div>
+      <p class="center">
+        <a href="https://github.com/DamnWidget/mamba/archive/master.zip" class="btn btn-inverse btn-large"><i class="icon-download-alt icon-white"></i> Download Mamba</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="github">
+    <p>
+      <ul>
+        <li>Fork in GitHub <a data-toggle="tooltip" data-placement="top" title="Mamba is Free Softwrae, you can colaborate forking it on GitHub" data-original-title="Mamba is GPL so you can colaborate forking it on GitHub" href="https://github.com/DamnWidget/mamba" target="_blank"><img src="assets/octocat-hover.png" /></a></li>
+        <li>Follow us in Twitter <a data-toggle="tooltip" data-placement="top" title="You can follow us on Twitter" data-original-title="You can follow us on Twitter" href="https://twitter.com/pymamba" target="_blank"><img src="assets/twitter-hover.png" /></a></li>
+      </ul>
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="introduction">
+      <h1>Built with steroids</h1>
+      <p class="caption">Introducing Mamba Framework Components</p>
+
+      <div class="row-fluid">
+        <div class="span4">
+          <img src="assets/twisted-component.png" />
+          <h2>Twisted Framework</h2>
+          <p>Mamba is built on top of <a href="http://twistedmatrix.com/documents/current/web/howto/" target="_blank">Twisted Web</a> and uses <a href="http://twistedmatrix.com/trac/" target="_bkank">Twisted</a> as WSGI web server as well. Twisted is an <a href="http://en.wikipedia.org/wiki/Event-driven_programming" target="_blank">event-driven</a> newtork programming framework completely written in Python and licensed under the <a href="http://opensource.org/licenses/MIT" target="_bkank">MIT License</a>.</p>
+        </div>
+        <div class="span4">
+          <img src="assets/storm-logo.png" />
+          <h2>Storm ORM</h2>
+          <p>Mamba uses <a href="https://storm.canonical.com/">Storm</a> as Object Relational Mapper. Storm is and object-relational mapper for Python developed at Canonical. Storm is successfully used in Canonical projects such as <a href="https://launchpad.net/" target="_blank">Launchpad</a> and <a href="http://www.canonical.com/projects/landscape" target="_blank">Landscape</a>. Storm was released on July 9th, 2007 under the <a href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU LGPL</a> License</p>
+        </div>
+        <div class="span4">
+          <img src="assets/jinja.png" />
+          <h2>Jinja2</h2>
+          <p>While Twisted has its own <a href="http://twistedmatrix.com/documents/current/web/howto/twisted-templates.html" target="_blank">templating system</a>, Mamba uses <a href="http://jinja.pocoo.org/">Jinja2</a> as primary templating system. Jinja2 is a full featured template engine for Python with full unicode support, and <a href="http://jinja.pocoo.org/docs/sandbox/" target="_blank">integrated sandboxed execution environment</a> licensed with the <a href="http://opensource.org/licenses/BSD-3-Clause" target="_blank">BSD 3-Clause License</a>.</p>
+        </div>
+      </div>
+
+      <h1>Make the web asynchronous</h1>
+      <p class="caption">Event driven programming using the Twisted's reactor pattern implementation</p>
+
+
+
+    </div>
+  </div>
+{% endblock %}
+{% block scripts %}
+    <script src="http://code.jquery.com/jquery.js"></script>
+{{ super() }}
+{% endblock %}

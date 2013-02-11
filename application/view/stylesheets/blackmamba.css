@@ -1,0 +1,291 @@
+/*!
+ * -*- mamba-file-type: mamba-css -*-
+ * BlackMamba 1.0
+ *
+ * Copyright 2013 Oscar Campos <oscar.campos@member.fsf.org>
+ * Licensed under the GNU General Public License v3
+ * See LICENSE for more details
+ */
+
+body {
+    position: relative;
+    padding-top: 40px;
+}
+
+/* Change the docs' brand */
+body > .navbar .brand {
+    padding-right: 0;
+    padding-left: 0;
+    margin-left: 20px;
+    float: right;
+    font-weight: bold;
+}
+
+body > .navbar .brand:hover {
+    color: #aab212;
+}
+
+body > .navbar .nav > li > a:hover,
+body > .navbar .nav > .active > a,
+body > .navbar .nav > .active > a:hover,
+body > .navbar .nav > .active > a:focus {
+    color: #aab212;
+}
+
+/* mamba */
+.mamba {
+    position: relative;
+    padding: 40px 0;
+    color: #dcdcdc;
+    background: #020031; /* Old browsers */
+    background: -moz-linear-gradient(45deg,  #000000 0%, #77903b 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#000000), color-stop(100%,#77903b)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(45deg,  #000000 0%,#77903b 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(45deg,  #000000 0%,#77903b 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(45deg,  #000000 0%,#77903b 100%); /* IE10+ */
+    background: linear-gradient(45deg,  #000000 0%,#77903b 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#77903b',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    -webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+       -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+            box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+}
+
+.mamba img {
+    float: left;
+}
+
+.mamba h1 {
+    font-size: 80px;
+    font-weight: bold;
+    margin-bottom: 30px
+}
+
+.mamba p {
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.25;
+    margin-bottom: 30px
+}
+
+.mamba a {
+    color: #aab212;
+}
+
+.mamba .center {
+    text-align: center;
+}
+
+.mamba .container {
+    position: relative;
+    z-index: 2;
+}
+
+.header {
+    padding: 70px 0 30px;
+    margin-bottom: 0;
+}
+
+.header h1 {
+    font-size: 120px;
+}
+
+.header .btn {
+    color: #aab212;
+}
+
+.mamba:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: url(../assets/mamba-bg.png) repeat center center;
+    opacity: .15;
+}
+
+.github {
+    color: #aab212;
+    text-align: center;
+    padding: 4px 0;
+    background: #25320f;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#25320f), to(#1c2906));
+    background: -webkit-linear-gradient(#25320f, #1c2906);
+    background: -moz-linear-gradient(#25320f, #1c2906);
+    background: -o-linear-gradient(#25320f, #1c2906);
+    background: linear-gradient(#25320f, #1c2906);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#25320f', endColorstr='#1c2906',GradientType=1 );
+    -webkit-box-shadow: 0 3px 7px rgba(0,0,0,.2), 0 -3px 7px rgba(0,0,0,.2);
+       -moz-box-shadow: 0 3px 7px rgba(0,0,0,.2), 0 -3px 7px rgba(0,0,0,.2);
+            box-shadow: 0 3px 7px rgba(0,0,0,.2), 0 -3px 7px rgba(0,0,0,.2);
+}
+
+.github p {
+    font-weight: bold;
+}
+
+.github img {
+    max-width: 24px;
+    margin-left: 4px;
+}
+
+.github ul {
+    list-style: none;
+}
+
+.github li {
+    display: inline-block;
+}
+
+.github li:last-child {
+    margin-left: 10px;
+}
+
+.introduction {
+    text-align: center;
+    color: #646464;
+}
+
+.introduction a:hover {
+    color: #aab212;
+}
+
+.introduction h1 {
+    text-align: center;
+    font-size: 70px;
+    margin: 60px 0 10px;
+    font-weight: 200;
+}
+
+.introduction .caption {
+    font-size: 20px;
+    margin-top: 20px;
+    padding-bottom: 50px;
+    font-weight: 300;
+    line-height: 1.25;
+    opacity: .4;
+}
+
+.introduction p {
+    font-size: 16px;
+    line-height: 1.25;
+}
+
+.introduction a {
+    color: #aab212;
+}
+
+.introduction a:hover {
+    color: #939b13;
+}
+
+
+/* Media Queries */
+
+/* Desktop large  */
+@media (min-width: 1200px) {
+
+}
+
+/* Desktop */
+@media (max-width: 980px) {
+  /* Unfloat brand */
+  body > .navbar-fixed-top .brand {
+    float: left;
+    margin-left: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  /* Inline-block quick links for more spacing */
+  .quick-links li {
+    display: inline-block;
+    margin: 5px;
+  }
+
+}
+
+/* Tablet to desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+  /* Remove any padding from the body */
+  body {
+    padding-top: 0;
+  }
+}
+
+/* Tablet */
+@media (max-width: 767px) {
+  /* Remove any padding from the body */
+  body {
+    padding-top: 0;
+  }
+
+  .mamba {
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: -20px;
+    margin-right: -20px;
+    margin-left: -20px;
+  }
+
+  .github {
+    margin-right: -20px;
+    margin-left: -20px;
+  }
+
+  .header h1 {
+    font-size: 90px;
+  }
+
+  .span2 img {
+    max-width: 128px;
+  }
+
+  /* Unfloat the back to top link in footer */
+  .footer {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .footer p {
+    margin-bottom: 9px;
+  }
+}
+
+/* Landscape phones */
+@media (max-width: 480px) {
+  /* Remove padding above jumbotron */
+  body {
+    padding-top: 0;
+  }
+
+  /* Change up some type stuff */
+  h2 small {
+    display: block;
+  }
+
+  /* Downsize mambas */
+  .mamba h1 {
+    font-size: 45px;
+  }
+
+  .mamba p {
+    font-size: 18px;
+  }
+
+  .introduction h1 {
+    font-size: 30px;
+  }
+
+  .introduction .caption {
+    font-size: 18px;
+    padding-top: 4px;
+  }
+
+  .footer {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
