@@ -93,6 +93,10 @@ body > .navbar .nav > .active > a:focus {
     color: #aab212;
 }
 
+.header .span2 {
+  text-align: center;
+}
+
 .mamba:after {
     content: '';
     display: block;
@@ -180,12 +184,36 @@ body > .navbar .nav > .active > a:focus {
     color: #939b13;
 }
 
+.introduction .cotainer .span4 img {
+    max-width: 50%;
+}
+
+/* footer */
+
+.footer {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 70px;
+    color: #646464;
+    /*color: #fdfdfd;*/
+    background: #fafafa;
+    border-top: #fdfdfd;
+    -webkit-box-shadow: 0 3px 7px rgba(0,0,0,.2), 0 -3px 7px rgba(0,0,0,.2);
+       -moz-box-shadow: 0 3px 7px rgba(0,0,0,.2), 0 -3px 7px rgba(0,0,0,.2);
+            box-shadow: 0 3px 7px rgba(0,0,0,.2), 0 -3px 7px rgba(0,0,0,.2);
+}
+
+.footer a {
+    color: #aab212;
+}
 
 /* Media Queries */
 
 /* Desktop large  */
 @media (min-width: 1200px) {
-
+    .brand {
+        visibility: hidden;
+    }
 }
 
 /* Desktop */

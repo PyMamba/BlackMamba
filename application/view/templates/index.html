@@ -16,9 +16,10 @@
         <div class="nav-collapse collapse">
           <ul class="nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#download">Download</a></li>
+            <li><a href="#gettingstart">Get started</a></li>
             <li><a href="#docs">Documentation</a></li>
+            <li><a href="#download">Download</a></li>
+            <li><a href="#blog">Blog</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
@@ -35,7 +36,7 @@
           </div>
           <div class="span10">
             <h1>Mamba</h1>
-            <p>High level and small asynchronous web applications framework and WSGI web server</p>
+            <p>Small and high level asynchronous web applications framework and WSGI web server</p>
           </div>
         </div>
       </div>
@@ -55,6 +56,7 @@
   </div>
 
   <div class="container">
+
     <div class="introduction">
       <h1>Built with steroids</h1>
       <p class="caption">Introducing Mamba Framework Components</p>
@@ -68,7 +70,7 @@
         <div class="span4">
           <img src="assets/storm-logo.png" />
           <h2>Storm ORM</h2>
-          <p>Mamba uses <a href="https://storm.canonical.com/">Storm</a> as Object Relational Mapper. Storm is and object-relational mapper for Python developed at Canonical. Storm is successfully used in Canonical projects such as <a href="https://launchpad.net/" target="_blank">Launchpad</a> and <a href="http://www.canonical.com/projects/landscape" target="_blank">Landscape</a>. Storm was released on July 9th, 2007 under the <a href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU LGPL</a> License</p>
+          <p>Mamba uses <a href="https://storm.canonical.com/">Storm</a> as Object Relational Mapper. Storm is an object-relational mapper for Python developed at Canonical. Storm is successfully used in Canonical projects such as <a href="https://launchpad.net/" target="_blank">Launchpad</a> and <a href="http://www.canonical.com/projects/landscape" target="_blank">Landscape</a>. Storm was released on July 9th, 2007 under the <a href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU LGPL</a> License</p>
         </div>
         <div class="span4">
           <img src="assets/jinja.png" />
@@ -80,10 +82,30 @@
       <h1>Make the web asynchronous</h1>
       <p class="caption">Event driven programming using the Twisted's reactor pattern implementation</p>
 
+      <div class="row-fluid">
+        <div class="span6">
+          <img src="assets/reactor.png" />
+          <h2>Twisted reactor pattern</h2>
+          <p>Twisted implementation of the <a href="http://en.wikipedia.org/wiki/Reactor_pattern#Python" target="_blank">reactor pattern</a> supports foreign event loops like <a href="http://www.gtk.org/" target="_blank">GTK+</a>, <a href="http://qt.digia.com/" target="_blank">Qt</a> and <a href="https://developer.apple.com/technologies/mac/cocoa.html">Cocoa</a>. As Mamba is built on top of Twisted Web, all the code in Mamba is <strong>asynchronous</strong> as well, including the <strong>database access</strong> layer. You can integrate Mamba as web layer in your already built Twisted applications as well because <strong>Mamba is just Twisted</strong>.</p>
+        </div>
+        <div class="span6">
+          <img src="assets/mamba-storm.png" />
+          <h2>Storm Mamba Integration</h2>
+          <p>Mamba uses the <a href="http://bazaar.launchpad.net/~storm/storm/trunk/view/head:/storm/twisted/transact.py" target_="_blank">Storm Twisted integration</a> that was added in version 0.19 of the library. In Mamba, database <strong>queries run asynchronous</strong> so you can expect to use the result from database operations as <a href="http://twistedmatrix.com/documents/current/core/howto/defer.html" target="_blank">Twisted Deferreds</a>. Storm is a schemaless library so Mamba <a href="http://en.wikipedia.org/wiki/Monkey_patch">monkeypatch</a> part of the library to allow nice Mamba self features like <strong>schema generation</strong> through model classes. No configuration files are needed to use Mamba Storm, just your <strong>Python definitions</strong>.</p>
+        </div>
 
+      </div>
 
     </div>
+
   </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Copyright &copy; 2013 Oscar Campos <a href="https://twitter.com/DamnWidget" target="_blank">@damnwidget</a></p>
+      <p>This web site is licensed under the GPLv3 you can check the code in <a href="https://github.com/DamnWidget/BlackMamba" target="_blank">GitHub</a></p>
+    </div>
+  </footer>
 {% endblock %}
 {% block scripts %}
     <script src="http://code.jquery.com/jquery.js"></script>
