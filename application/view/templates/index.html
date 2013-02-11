@@ -4,6 +4,20 @@
 {{ super() }}
 {% endblock %}
 {% block body %}
+  <!-- modal dialog -->
+  <div id="notYetModal" class="modal hide fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>Mamba Download</h3>
+    </div>
+    <div class="modal-body">
+       <p>Sorry but Mamba is not yet ready to donwload. It will be available sortly</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+    </div>
+  </div>
+
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
@@ -41,7 +55,7 @@
         </div>
       </div>
       <p class="center">
-        <a href="https://github.com/DamnWidget/mamba/archive/master.zip" class="btn btn-inverse btn-large"><i class="icon-download-alt icon-white"></i> Download Mamba</a>
+        <a data-toggle="modal" data-target="#notYetModal" class="btn btn-inverse btn-large"><i class="icon-download-alt icon-white"></i> Download Mamba</a>
       </p>
     </div>
   </div>
@@ -49,7 +63,7 @@
   <div class="github">
     <p>
       <ul>
-        <li>Fork in GitHub <a data-toggle="tooltip" data-placement="top" title="Mamba is Free Softwrae, you can colaborate forking it on GitHub" data-original-title="Mamba is GPL so you can colaborate forking it on GitHub" href="https://github.com/DamnWidget/mamba" target="_blank"><img src="assets/octocat-hover.png" /></a></li>
+        <li>Fork in GitHub <a data-toggle="tooltip" data-placement="top" title="Mamba is Free Softwrae, you can colaborate forking it on GitHub" data-original-title="Mamba is GPL so you can colaborate forking it on GitHub" href="#" target="_blank"><img src="assets/octocat-hover.png" /></a></li>
         <li>Follow us in Twitter <a data-toggle="tooltip" data-placement="top" title="You can follow us on Twitter" data-original-title="You can follow us on Twitter" href="https://twitter.com/pymamba" target="_blank"><img src="assets/twitter-hover.png" /></a></li>
       </ul>
     </p>
