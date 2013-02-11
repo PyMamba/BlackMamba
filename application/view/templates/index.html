@@ -1,9 +1,5 @@
-{% extends "root_page.html" %}
-{% block head %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{{ super() }}
-{% endblock %}
-{% block body %}
+{% extends "layout.html" %}
+  {% block content %}
   <!-- modal dialog -->
   <div id="notYetModal" class="modal hide fade">
     <div class="modal-header">
@@ -16,57 +12,6 @@
     <div class="modal-footer">
       <a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
     </div>
-  </div>
-
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="brand" href="/">Mamba</a>
-        <div class="nav-collapse collapse">
-          <ul class="nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#gettingstart">Get started</a></li>
-            <li><a href="#docs">Documentation</a></li>
-            <li><a href="#download">Download</a></li>
-            <li><a href="#blog">Blog</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="mamba header">
-    <div class="container">
-      <div class="container-fluid">
-        <div class="row-fluid">
-          <div class="span2">
-            <img src="assets/logo.png" />
-          </div>
-          <div class="span10">
-            <h1>Mamba</h1>
-            <p>Small and high level asynchronous web applications framework and WSGI web server</p>
-          </div>
-        </div>
-      </div>
-      <p class="center">
-        <a data-toggle="modal" data-target="#notYetModal" class="btn btn-inverse btn-large"><i class="icon-download-alt icon-white"></i> Download Mamba</a>
-      </p>
-    </div>
-  </div>
-
-  <div class="github">
-    <p>
-      <ul>
-        <li>Fork in GitHub <a data-toggle="tooltip" data-placement="top" title="Mamba is Free Softwrae, you can colaborate forking it on GitHub" data-original-title="Mamba is GPL so you can colaborate forking it on GitHub" href="#" target="_blank"><img src="assets/octocat-hover.png" /></a></li>
-        <li>Follow us in Twitter <a data-toggle="tooltip" data-placement="top" title="You can follow us on Twitter" data-original-title="You can follow us on Twitter" href="https://twitter.com/pymamba" target="_blank"><img src="assets/twitter-hover.png" /></a></li>
-      </ul>
-    </p>
   </div>
 
   <div class="container">
@@ -114,14 +59,4 @@
 
   </div>
 
-  <footer class="footer">
-    <div class="container">
-      <p>Copyright &copy; 2013 Oscar Campos <a href="https://twitter.com/DamnWidget" target="_blank">@damnwidget</a></p>
-      <p>This web site is licensed under the GPLv3 you can check the code in <a href="https://github.com/DamnWidget/BlackMamba" target="_blank">GitHub</a></p>
-    </div>
-  </footer>
-{% endblock %}
-{% block scripts %}
-    <script src="http://code.jquery.com/jquery.js"></script>
-{{ super() }}
-{% endblock %}
+  {% endblock %}
