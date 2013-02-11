@@ -40,3 +40,10 @@ _trial_temp/
 # Sublime Text
 *.sublime-project
 *.sublime-workspace
+
+# SublimeRope
+.ropeproject/
+
+# Twistd
+twistd.*
+dropin.cache
