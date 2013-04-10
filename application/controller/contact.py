@@ -15,12 +15,12 @@ from zope.interface import implements
 from mamba.web.response import Ok
 from mamba.application import route
 from mamba.core import interfaces, templating
-from mamba.application.controller import Controller, ControllerProvider
+from mamba.application.controller import Controller
 
 from application.controller import template_args
 
 
-class Contact(Controller, ControllerProvider):
+class Contact(Controller):
     """
     Contact Controller
     """

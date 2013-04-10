@@ -2,10 +2,12 @@ from zope.interface import implements
 
 from twisted.python import usage
 from twisted.plugin import IPlugin
-from twisted.application.service import IServiceMaker
 from twisted.application import internet
+from twisted.application.service import IServiceMaker
 
 from mamba.utils import config
+from mamba.enterprise import database
+from mamba.core.services.threadpool import ThreadPoolService
 from blackmamba import MambaApplicationFactory
 
 settings = config.Application('config/application.json')
@@ -26,12 +28,16 @@ class MambaServiceMaker(object):
     def makeService(self, options):
         """Construct a TCPServer from a factory defined in BlackMamba
         """
+
         factory, application = MambaApplicationFactory(settings)
         httpserver = internet.TCPServer(int(options['port']), factory)
         httpserver.setName('{} Application'.format(settings.name))
-        httpserver.setServiceParent(application)
+        application.addService(httpserver)
 
-        return httpserver
+        thread_pool = ThreadPoolService(database.Database.pool)
+        application.addService(thread_pool)
+
+        return application
 
 
 # Now construct an object which *provides* the relevant interfaces

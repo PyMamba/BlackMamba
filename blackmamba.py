@@ -11,7 +11,6 @@
 """
 
 from twisted.web import server
-from twisted.python import log
 from twisted.application import service
 
 from mamba import Mamba
@@ -20,12 +19,11 @@ from mamba.web import Page
 
 def MambaApplicationFactory(settings):
     # load the configuration
-    application = service.Application(settings.name)
+    application = service.MultiService()
+    application.setName(settings.name)
 
     # register settings through Mamba Borg
     app = Mamba(settings)
-    # we need log at routing registration so open log file
-    log.startLogging(open('twistd.log', 'w+'))
 
     # create the root page
     root = Page(app)
