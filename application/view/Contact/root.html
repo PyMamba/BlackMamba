@@ -6,25 +6,44 @@
   {{ super() }}
   <div class="container">
 
-    <div class="introduction">
+    <div class="introduction contact">
       <h1>How to contact us?</h1>
       <p class="caption">There are several ways to put yourself in touch with us</p>
 
       <div class="row-fluid">
         <div class="span4">
-          <img src="assets/twisted-component.png" />
+          <img class="reduce" src="assets/octocat.png" />
           <h2>GitHub</h2>
-          <p>Mamba is built on top of <a href="http://twistedmatrix.com/documents/current/web/howto/" target="_blank">Twisted Web</a> and uses <a href="http://twistedmatrix.com/trac/" target="_bkank">Twisted</a> as WSGI web server as well. Twisted is an <a href="http://en.wikipedia.org/wiki/Event-driven_programming" target="_blank">event-driven</a> newtork programming framework completely written in Python and licensed under the <a href="http://opensource.org/licenses/MIT" target="_bkank">MIT License</a>.</p>
+          <p>
+            Mamba is a Free Software project, so you can redistribute it and/or modify
+            it under the terms of the <a href="http://www.gnu.org/licenses/gpl-3.0.html">
+            GNU General Public License</a> version 3 or any later version. The Mamba's
+            source code is public and available in both <a href="https://github.com/DamnWidget/mamba">
+            Github</a> and <a href="https://bitbucket.org/damnwidget/mamba">Bitbucket</a> git repositories.
+          </p>
         </div>
         <div class="span4">
-          <img src="assets/storm-logo.png" />
+          <img class="reduce" src="assets/twitter.png" />
           <h2>Twitter</h2>
-          <p>Mamba uses <a href="https://storm.canonical.com/">Storm</a> as Object Relational Mapper. Storm is an object-relational mapper for Python developed at Canonical. Storm is successfully used in Canonical projects such as <a href="https://launchpad.net/" target="_blank">Launchpad</a> and <a href="http://www.canonical.com/projects/landscape" target="_blank">Landscape</a>. Storm was released on July 9th, 2007 under the <a href="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU LGPL</a> License</p>
+          <p>
+            You can follow us in our official <a href="http://twitter.com">Twitter</a>
+            account. We use this account to inform about the latests news related with
+            Mamba as releases, bug fixes, security issues and more. We also try to
+            reply to anyone that put in contact with us through Twitter. Just follow the
+            <a href="https://twitter.com/pymamba">@pymamba</a> account.
+          </p>
         </div>
         <div class="span4">
-          <img src="assets/jinja.png" />
+          <img class="reduce" src="assets/arroba.png" />
           <h2>EMail</h2>
-          <p>While Twisted has its own <a href="http://twistedmatrix.com/documents/current/web/howto/twisted-templates.html" target="_blank">templating system</a>, Mamba uses <a href="http://jinja.pocoo.org/">Jinja2</a> as primary templating engine. Jinja2 is a full featured template engine for Python with full unicode support, and <a href="http://jinja.pocoo.org/docs/sandbox/" target="_blank">integrated sandboxed execution environment</a> licensed with the <a href="http://opensource.org/licenses/BSD-3-Clause" target="_blank">BSD 3-Clause License</a>.</p>
+          <p>
+            You can also get involve registering yourself in any of the following mailing lists:
+            <ul class="left">
+              <li><a href="mailto:@pymamba.com">@pymamba.com</a> - mamba support list</li>
+              <li><a href="mailto:@pymamba.com">@pymamba.com</a> - mamba learning center list</li>
+              <li><a href="mailto:@pymmaba.com">@pymmaba.com</a> - core-developers list</li>
+            <ul>
+          </p>
         </div>
       </div>
 
@@ -32,17 +51,24 @@
       <p class="caption">If you don't like the contact methods above you can just use this contact form</p>
 
       <div class="row-fluid">
-        <div class="span6">
-          <img src="assets/reactor.png" />
-          <h2>Twisted reactor pattern</h2>
-          <p>Twisted implementation of the <a href="http://en.wikipedia.org/wiki/Reactor_pattern#Python" target="_blank">reactor pattern</a> supports foreign event loops like <a href="http://www.gtk.org/" target="_blank">GTK+</a>, <a href="http://qt.digia.com/" target="_blank">Qt</a> and <a href="https://developer.apple.com/technologies/mac/cocoa.html">Cocoa</a>. As Mamba is built on top of Twisted Web, all the code in Mamba is <strong>asynchronous</strong> as well, including the <strong>database access</strong> layer. You can integrate Mamba as web layer in your already built Twisted applications as well because <strong>Mamba is just Twisted</strong>.</p>
-        </div>
-        <div class="span6">
-          <img src="assets/mamba-storm.png" />
-          <h2>Storm Mamba Integration</h2>
-          <p>Mamba uses the <a href="http://bazaar.launchpad.net/~storm/storm/trunk/view/head:/storm/twisted/transact.py" target_="_blank">Storm Twisted integration</a> that was added in version 0.19 of the library. In Mamba, database <strong>queries run asynchronous</strong> so you can expect to use the result from database operations as <a href="http://twistedmatrix.com/documents/current/core/howto/defer.html" target="_blank">Twisted Deferreds</a>. Storm is a schemaless library so Mamba <a href="http://en.wikipedia.org/wiki/Monkey_patch">monkeypatch</a> part of the library to allow nice Mamba self features like <strong>schema generation</strong> through model classes. No configuration files are needed to use Mamba Storm, just your <strong>Python definitions</strong>.</p>
-        </div>
+        <div class="span6 offset3">
 
+          <form class="left" id="contact" method="post">
+            <fieldset>
+              <legend>Contact Form</legend>
+              <label>Who are you?</label>
+              <input class="input-xlarge" id="name" type="text" placeholder="Your name..." required>
+              <label>Where to contact with you?</label>
+              <input class="input-xlarge" id="email" type="email" placeholder="Your email..." required>
+              <span class="help-block">We don't use your email to send you non requested information</span>
+              <label>What we can do for you?</label>
+              <textarea id="content" rows="6" required>
+              </textarea><br />
+              <button type="submit" class="btn btn-inverse">Send Request</button>
+            </fieldset>
+          </form>
+
+        </div>
       </div>
 
     </div>

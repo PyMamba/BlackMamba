@@ -184,8 +184,24 @@ body > .navbar .nav > .active > a:focus {
     color: #939b13;
 }
 
-.introduction .cotainer .span4 img {
+.introduction .container .span4 img {
     max-width: 50%;
+}
+
+.contact .reduce {
+  max-width: 50%;
+  -khtml-opacity: 0.60;
+    -moz-opacity: 0.60;
+         opacity: 0.60;
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha"(Opacity=60);
+}
+
+.contact .left {
+    text-align: left;
+}
+
+.contact textarea {
+    width: 80%;
 }
 
 /* footer */

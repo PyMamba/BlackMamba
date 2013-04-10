@@ -8,4 +8,5 @@ $(function () {
     $('.github').tooltip({
         selector: "a[data-toggle=tooltip]"
     });
+
 });
