@@ -47,3 +47,6 @@ _trial_temp/
 # Twistd
 twistd.*
 dropin.cache
+
+# BlackMamba
+config/database.json
