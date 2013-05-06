@@ -1,0 +1,3 @@
+[submodule "mamba"]
+	path = mamba
+	url = git://github.com/DamnWidget/mamba.git
