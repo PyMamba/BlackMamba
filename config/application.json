@@ -4,5 +4,7 @@
     "version": "1.0",
     "port": 1936,
     "log_file": "service.log",
-    "debug": false
+    "debug": false,
+    "contact_recipients": ["mamba-support@googlegroups.com"],
+    "git_repository": "https://github.com/DamnWidget/mamba"
 }

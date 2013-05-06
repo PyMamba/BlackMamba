@@ -50,3 +50,4 @@ dropin.cache
 
 # BlackMamba
 config/database.json
+*.log

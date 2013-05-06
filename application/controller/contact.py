@@ -10,14 +10,17 @@
 .. controllerauthor:: Oscar Campos <oscar.campos@member.fsf.org>
 """
 
+from twisted.internet import defer
 from zope.interface import implements
 
-from mamba.web.response import Ok
 from mamba.application import route
+from mamba.utils.config import Application
+from mamba.web.response import Ok, BadRequest
 from mamba.core import interfaces, templating
 from mamba.application.controller import Controller
 
-from application.controller import template_args
+from application.lib import smtp
+from application import controller
 
 
 class Contact(Controller):
@@ -32,7 +35,7 @@ class Contact(Controller):
 
     def __init__(self):
         """
-        Put your initializarion code here
+        Put your initialization code here
         """
         super(Contact, self).__init__()
 
@@ -40,7 +43,32 @@ class Contact(Controller):
 
     @route('/')
     def root(self, request, **kwargs):
-        template_args['menu_options'][0]['active'] = False
-        template_args['menu_options'][5]['active'] = True
+        controller.toggle_menu(controller.CONTACT)
+        template_args = controller.template_args
 
         return Ok(self.template.render(**template_args).encode('utf-8'))
+
+    @route('/form_request', method='POST')
+    @defer.inlineCallbacks
+    def form_request(self, request, **kwargs):
+
+        message = (
+            'New message from {name} <{email}> using contact '
+            'form on main site\n\n{content}'.format(
+                name=kwargs.get('name'),
+                email=kwargs.get('email'),
+                content=kwargs.get('content')
+            )
+        )
+
+        result = yield smtp.sendmail(
+            message=message,
+            subject='[PyMamba] Contact Form Request {}'.format(
+                kwargs.get('name')),
+            sender='contact@pymmaba.com',
+            recipients=Application().contact_recipients,
+            host='localhost'
+        )
+
+        retval = Ok({'success': True}) if result is True else BadRequest()
+        defer.returnValue(retval)

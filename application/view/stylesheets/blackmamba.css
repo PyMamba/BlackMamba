@@ -204,6 +204,10 @@ body > .navbar .nav > .active > a:focus {
     width: 80%;
 }
 
+.downloads .tabbable {
+  margin-bottom: 60px;
+}
+
 /* footer */
 
 .footer {

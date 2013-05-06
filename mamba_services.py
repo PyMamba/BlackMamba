@@ -16,3 +16,4 @@ import sys
 sys.path.append('.')
 
 from mamba.utils import config
+assert config

@@ -39,9 +39,9 @@
           <p>
             You can also get involve registering yourself in any of the following mailing lists:
             <ul class="left">
-              <li><a href="mailto:@pymamba.com">@pymamba.com</a> - mamba support list</li>
-              <li><a href="mailto:@pymamba.com">@pymamba.com</a> - mamba learning center list</li>
-              <li><a href="mailto:@pymmaba.com">@pymmaba.com</a> - core-developers list</li>
+              <li><a href="mailto:mamba-support@googlegroups.com">Support Google Groups</a> - mamba support list</li>
+              <li><a href="mailto:mamba-learn@pgooglegroups.com">Learn Google Groups</a> - mamba learning center list</li>
+              <li><a href="mailto:mamba-developers@googlegroups.com">Developers Google Groups</a> - core-developers list</li>
             <ul>
           </p>
         </div>
@@ -53,7 +53,7 @@
       <div class="row-fluid">
         <div class="span6 offset3">
 
-          <form class="left" id="contact" method="post">
+          <form class="left" id="contact" action="#">
             <fieldset>
               <legend>Contact Form</legend>
               <label>Who are you?</label>
@@ -73,6 +73,36 @@
 
     </div>
 
+  </div>
+
+  <div class="success modal hide fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>Contact request confirmation</h3>
+    </div>
+    <div class="modal-body">
+      <p>
+        Your request has been sent. We try to reply all the queries we get but expect between 24 and 72 hours of time lapse.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">Close</a>
+    </div>
+  </div>
+
+  <div class="fail modal hide fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>Contact request error</h3>
+    </div>
+    <div class="modal-body">
+      <p>
+        Sorry but I wasn't able to send your request to the server, Try again later
+      </p>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn btn-inverse" data-dismiss="modal" aria-hidden="true">Close</a>
+    </div>
   </div>
 
   {% endblock %}

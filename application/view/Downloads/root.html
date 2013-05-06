@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+    {% block content %}
+    {{ super() }}
+
+    <!--
+        Copyright (c) 2013 - Oscar Campos <oscar.campos@member.fsf.org>
+
+        view: Root
+            synopsis: Root view for Donwload controller
+
+        viewauthor: Oscar Campos <oscar.campos@member.fsf.org>
+    -->
+
+    <div class="container">
+
+      <div class="introduction downloads">
+        <h1>Downloads</h1>
+
+        <div class="row-fluid">
+          <div class="span8 offset2">
+            <p class="caption">
+                We strongly recommend to download the latest stable Mamba version. Obtain the sources from GitHub or BitBucket for the in development version
+            </p>
+
+            <div class="tabbable">
+              <ul class="nav nav-tabs">
+                  <li class="active"><a href="#tab1" data-toggle="tab">Current</a></li>
+                  <li><a href="#tab2" data-toggle="tab">Older</a></li>
+                  <li><a href="#tab3" data-toggle="tab">Devel Version</a></li>
+              </ul>
+
+              <div class="tab-content">
+                <div id="tab1" class="tab-pane active">
+
+                  <table class="table table-striped table-condensed">
+                    <thead>
+                      <tr>
+                        <th>File</th>
+                        <th></th>
+                        <th>Type</th>
+                        <th>Platform</th>
+                        <th>Size</th>
+                        <th>Release date</th>
+                        <th>Downloads</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for item in releases %}
+                        <tr>
+                          <td><a href="{{ item.link }}">{{ item.name }}</a></td>
+                          <td>(<a href="{{ item.md5 }}">md5</a>)</td>
+                          <td>{{ item.type_string() }}</td>
+                          <td>{{ item.platforms_string() }}</td>
+                          <td>{{ item.size // 1024 }}kb</td>
+                          <td>{{ item.release_date }}</td>
+                          <td><p class="text-right">{{ item.downloads }}</p></td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+
+                </div>
+
+                <div id="tab2" class="tab-pane">
+
+                    <table class="table table-striped table-condensed">
+                    <thead>
+                      <tr>
+                        <th>File</th>
+                        <th></th>
+                        <th>Type</th>
+                        <th>Platform</th>
+                        <th>Size</th>
+                        <th>Release date</th>
+                        <th>Downloads</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for release in old_releases %}
+                        <!-- <tr>
+                          <td colspan="7"><h5>Release v{{ release['release'].version }}</h5></td>
+                        </tr> -->
+                        {% for item in release['files'] %}
+                          <tr>
+                            <td><a href="{{ item.link }}">{{ item.name }}</a></td>
+                            {% if item.md5 %}
+                              <td>(<a href="{{ item.md5 }}">md5</a>)</td>
+                            {% else %}
+                              <td></td>
+                            {% endif %}
+                            <td>{{ item.type_string() }}</td>
+                            <td>{{ item.platforms_string() }}</td>
+                            <td>{{ item.size }}</td>
+                            {% if item.release_date %}
+                              <td>{{ item.release_date }}</td>
+                            {% else %}
+                              <td>check on github</td>
+                            {% endif %}
+                            {% if item.donwloads %}
+                              <td>{{ item.downloads }}</td>
+                            {% else %}
+                              <td>Not available</td>
+                            {% endif %}
+                          </tr>
+                        {% endfor %}
+                      {% endfor %}
+                    </tbody>
+                  </table>
+
+                </div>
+
+                <div id="tab3" class="tab-pane text-left">
+                  <p>
+                    If you are confident living at the edge you can just clone the actual in development version cloning our git repository but we don't really recommend this.
+                  </p>
+
+                  <p>
+                    The git repository is normally not a stable state of the Mamba framework and is NOT ready for production use. If what you want is just try out experimental features that are not yet part of the stable releases you can just checkout our <code>prerelease</code> versions in the GitHub or BitBucket repositories
+                  </p>
+
+                  <p>
+                    <small><strong>NOTE</strong>: prereleases are just <code>git tags</code> with the word <strong>pre#</strong> and a number (#) at the end</small><br /><br />
+                  </p>
+
+                  <p>
+                    <h4>GitHub</h4>
+                    To clone the latest commit from github just copy and paste the following line in your terminal:<br /><br />
+                    <code>git clone https://github.com/DamnWidget/mamba.git</code>
+                  </p>
+                  <p>
+                    <h4>BitBucket</h4>
+                    If you preffer Bitbucket just use the following line instead:<br /><br />
+                    <code>git clone https://bitbucket.org/damnwidget/mamba.git</code>
+                  </p>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    {% endblock %}
