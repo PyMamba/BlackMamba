@@ -51,10 +51,11 @@ class Downloads(Controller):
         files = []
         release = yield Release().last
 
-        for rfile in release.files:
-            rfile.link = '/download/latest/{}'.format(rfile.type_string())
-            rfile.md5 = '/download/digest/{}'.format(rfile.id)
-            files.append(rfile)
+        if release is not None:
+            for rfile in release.files:
+                rfile.link = '/download/latest/{}'.format(rfile.type_string())
+                rfile.md5 = '/download/digest/{}'.format(rfile.id)
+                files.append(rfile)
 
         defer.returnValue(files)
 

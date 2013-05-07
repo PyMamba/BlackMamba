@@ -1,5 +1,9 @@
 # Controllers should be placed here
 
+"""
+Some helper functions and stuff here to make our life easier
+"""
+
 HOME, GET_STARTED, DOCUMENTATION, DOWNLOAD, BLOG, CONTACT = range(6)
 
 template_args = {
