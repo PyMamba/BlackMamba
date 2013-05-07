@@ -137,6 +137,17 @@ class Account(controller.Controller):
         if len(errors) > 0:
             return {'success': False, 'msg': '\n'.join(errors)}
 
+        user = User()
+        for key, value in kwargs:
+            if key == 'key':
+                value = sha512(value).hexdigest()
+
+            if hasattr(user, key):
+                setattr(user, key, value)
+
+        user.create()
+        return {'success': True}
+
     @route('/delete/<key>', method='POST')
     @authed
     def delete(self, request, key, **kwargs):
