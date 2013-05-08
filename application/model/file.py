@@ -10,13 +10,17 @@
 .. modelauthor:: Oscar Campos <oscar.campos@member.fsf.org>
 """
 
-from twisted.internet import defer
+from twisted.python import log
+from twisted.web.client import Agent
+from twisted.internet import reactor, defer
 from storm.twisted.transact import transact
+from twisted.web.http_headers import Headers
 from storm.locals import Int, Unicode, DateTime, Storm, Reference
-
 from mamba.application import model
 
 from application.lib import bitvector
+from application.lib.ssl import WebClientContextFactory
+from application.lib.web_client import DownloaderProtocol
 
 # platforms
 INDEPENDENT = bitvector.BV00
@@ -89,3 +93,40 @@ class File(model.Model, Storm):
                 platforms.append('linux')
 
         return ', '.join(platforms)
+
+    @defer.inlineCallbacks
+    def build_release_files(self, release):
+        """Build the files for the given release
+        """
+
+        context_factory = WebClientContextFactory()
+        agent = Agent(reactor, context_factory)
+        url = 'http://pypi.python.org/packages'
+        for filetype in ['tar.bz2', 'win32.exe']:
+            response = yield agent.request(
+                'GET',
+                '{}/source/m/mamba-framework/mamba-framework-{}.{}'.format(
+                    url, release.version, filetype),
+                Headers({'User-Agent': ['Mamba Release Updater']}),
+                None
+            )
+
+            if response.code != 200:
+                log.msg(response)
+            else:
+                d = defer.Deferred()
+                response.deliverBody(DownloaderProtocol(
+                    'releases/mamba-framework-{}.{}'.format(
+                        release.version, filetype
+                    )
+                ), d)
+                d.addCallbacks(self._insert_file, [release, filetype], log.msg)
+
+    @transact
+    def _insert_file(self, digests, release, filetype):
+        """Generate a file and insert it into the database
+        """
+
+        rfile = File()
+        rfile.name = 'mamba-framework-{}.{}'.format(release.version, filetype)
+

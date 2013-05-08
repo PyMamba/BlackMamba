@@ -10,6 +10,9 @@
 .. modelauthor:: Oscar Campos <oscar.campos@member.fsf.org>
 """
 
+import datetime
+
+from twisted.python import log
 from storm.twisted.transact import transact
 from storm.locals import Int, Unicode, DateTime, Storm, ReferenceSet, Desc
 
@@ -56,3 +59,11 @@ class Release(model.Model, Storm):
         data = store.find(self.__class__).order_by(Desc(self.__class__.id))[1:]
 
         return data
+
+    def build_release(self, version):
+        """Build a new release with the given version
+        """
+
+        self.version = version
+        self.release_date = datetime.datetime.now()
+        self.create()

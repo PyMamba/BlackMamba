@@ -19,7 +19,6 @@ from twisted.web.client import Agent
 from zope.interface import implements
 from twisted.internet import defer, reactor
 from twisted.web.http_headers import Headers
-from twisted.internet.ssl import ClientContextFactory
 
 from mamba.web.response import Ok
 from mamba.core import interfaces
@@ -28,14 +27,7 @@ from mamba.application import controller
 
 from application.model.user import User
 from application.lib.permissions import authed
-
-
-class WebClientContextFactory(ClientContextFactory):
-    """Just a convenience class to can use Agent over SSL connections
-    """
-
-    def getContext(self, hostname, port):
-        return ClientContextFactory.getContext(self)
+from application.lib.ssl import WebClientContextFactory
 
 
 class Account(controller.Controller):
