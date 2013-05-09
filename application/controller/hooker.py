@@ -47,33 +47,32 @@ class Hooker(controller.Controller):
         """Process an update from GitHub
         """
 
+        log.msg('Received github hook payload: {}'.format(payload))
+
+        retval = False
         commit = payload['after']
         refname = payload['ref']
+        release = request.release if hasattr(request, 'release') else Release()
+        rfile = request.rfile if hasattr(request, 'rfile') else File()
 
-        if not 'refs/heads/' in refname:
+        if commit == '0000000000000000000000000000000000000000':
+            log.msg('Branch deletion, this is not a release, ignoring')
+        elif not 'refs/heads/' in refname:
             log.msg('Ignoring refname {}: Not a branch'.format(refname))
+        elif len(payload['commits']) > 1:
+            log.msg('Ignoring, not a release commit')
+        elif ('release [mamba, version'
+                not in payload['head_commit']['message']):
+            log.msg('Ignoring, not a release commit')
         else:
-            branch = refname.rsplit('/', 1)[1]
-            if commit == '0000000000000000000000000000000000000000':
-                log.msg('Branch `{}` deleted, ignoring'.format(branch))
-            else:
-                if len(payload['commits']) > 1:
-                    log.msg('Ignoring, not a release commit')
-                elif ('release [mamba, version'
-                        not in payload['commits'][0]['comments']):
-                    log.msg('Ignoring, not a release commit')
-                else:
-                    version = payload['commits'][0]['comments']
-                    release_version = version.rsplit(' ', 1)[1].rstrip(']')
-                    log.msg('New Release {}, updating database...'.format(
-                        release_version
-                    ))
+            version = payload['head_commit']['message']
+            release_version = version.rsplit(' ', 1)[1].rstrip(']')
+            log.msg('New Release {}, updating database...'.format(
+                release_version
+            ))
 
-                    # adds release to the donwloads
-                    release = Release()
-                    release.build_release(release_version)
+            release.build_release(release_version)
+            rfile.build_release_files(release)
+            retval = True
 
-                    rfile = File()
-                    rfile.build_release_files(release)
-
-        return Ok()
+        return Ok({'retval': retval})

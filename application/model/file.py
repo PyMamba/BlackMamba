@@ -47,6 +47,7 @@ class File(model.Model, Storm):
     release_date = DateTime()
     downloads = Int(unsigned=True)
     md5_sum = Unicode(size=32)
+    sha1_sum = Unicode(size=40)
 
     # references
     release_id = Int(unsigned=True)
@@ -70,6 +71,18 @@ class File(model.Model, Storm):
 
         types = ('source', 'egg', 'win executable')
         return types[self.type]
+
+    def get_type_from_extension(self, ext):
+        """Return back file type index using extension
+        """
+
+        index = 0
+        if ext == 'egg':
+            index = 1
+        if ext == 'win32.exe':
+            index = 2
+
+        return index
 
     def platforms_string(self):
         """Return the platforms string for the file
@@ -120,13 +133,25 @@ class File(model.Model, Storm):
                         release.version, filetype
                     )
                 ), d)
-                d.addCallbacks(self._insert_file, [release, filetype], log.msg)
+                d.addCallbacks(
+                    self._insert_file,
+                    [release, filetype, response.length],
+                    log.msg
+                )
 
-    @transact
-    def _insert_file(self, digests, release, filetype):
+    def _insert_file(self, digests, release, filetype, length):
         """Generate a file and insert it into the database
         """
 
         rfile = File()
+        rfile.release = release
         rfile.name = 'mamba-framework-{}.{}'.format(release.version, filetype)
+        rfile.type = self.get_type_from_extension(filetype)
+        rfile.platform = 4 if filetype == 'win32.exe' else 1
+        rfile.size = length
+        rfile.md5_sum = digests[0]
+        rfile.sha1_sum = digests[1]
+        rfile.release_date = release.release_date
+        rfile.downloads = 0
 
+        rfile.create()
