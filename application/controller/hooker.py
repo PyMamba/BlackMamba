@@ -10,6 +10,9 @@
 .. controllerauthor:: Oscar Campos <oscar.campos@member.fsf.org>
 """
 
+import json
+import urlparse
+
 from twisted.python import log
 from zope.interface import implements
 
@@ -42,29 +45,35 @@ class Hooker(controller.Controller):
     def root(self, request, **kwargs):
         return Ok('I am the Hooker, hello world!')
 
-    @route('/github_update', method='POST')
-    def github_update(self, request, **payload):
+    @route('/github_update/<payload>', method='POST')
+    def github_update(self, request, payload, **kwargs):
         """Process an update from GitHub
         """
 
+        payload = json.loads(dict(urlparse.parse_qsl(payload))['payload'])
         log.msg('Received github hook payload: {}'.format(payload))
 
-        retval = False
         commit = payload['after']
         refname = payload['ref']
         release = request.release if hasattr(request, 'release') else Release()
         rfile = request.rfile if hasattr(request, 'rfile') else File()
+        retval = 'ignored'
 
         if commit == '0000000000000000000000000000000000000000':
             log.msg('Branch deletion, this is not a release, ignoring')
+            retval += ' branch deletion'
         elif not 'refs/heads/' in refname:
             log.msg('Ignoring refname {}: Not a branch'.format(refname))
+            retval += ' not a branch'
         elif len(payload['commits']) > 1:
             log.msg('Ignoring, not a release commit')
+            retval += ' not a release'
         elif ('release [mamba, version'
                 not in payload['head_commit']['message']):
             log.msg('Ignoring, not a release commit')
+            retval += ' not a release'
         else:
+            retval = 'released'
             version = payload['head_commit']['message']
             release_version = version.rsplit(' ', 1)[1].rstrip(']')
             log.msg('New Release {}, updating database...'.format(
@@ -73,6 +82,5 @@ class Hooker(controller.Controller):
 
             release.build_release(release_version)
             rfile.build_release_files(release)
-            retval = True
 
-        return Ok({'retval': retval})
+        return Ok(retval)

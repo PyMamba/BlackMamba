@@ -2,6 +2,8 @@
 # Copyright (c) 2013 - Oscar Campos <oscar.campos@member.fsf.org>
 # See LICENSE for details
 
+import urllib
+import datetime
 from cStringIO import StringIO
 
 from twisted.web import server
@@ -15,152 +17,85 @@ from mamba.test.test_controller import ControllerRequest
 from application.controller.hooker import Hooker
 
 payload = """{
-   "after":"1481a2de7b2a7d02428ad93446ab166be7793fbb",
-   "before":"17c497ccc7cca9c2f735aa07e9e3813060ce9a6a",
-   "commits":[
-      {
-         "added":[
-
-         ],
-         "author":{
-            "email":"lolwut@noway.biz",
-            "name":"Garen Torikian",
-            "username":"octokitty"
-         },
-         "committer":{
-            "email":"lolwut@noway.biz",
-            "name":"Garen Torikian",
-            "username":"octokitty"
-         },
-         "distinct":true,
-         "id":"c441029cf673f84c8b7db52d0a5944ee5c52ff89",
-         "message":"Test",
-         "modified":[
-            "README.md"
-         ],
-         "removed":[
-
-         ],
-         "timestamp":"2013-02-22T13:50:07-08:00",
-         "url":"https://github.com/octokitty/testing/commit/c441029cf673f84c8b7db52d0a5944ee5c52ff89"
-      },
-      {
-         "added":[
-
-         ],
-         "author":{
-            "email":"lolwut@noway.biz",
-            "name":"Garen Torikian",
-            "username":"octokitty"
-         },
-         "committer":{
-            "email":"lolwut@noway.biz",
-            "name":"Garen Torikian",
-            "username":"octokitty"
-         },
-         "distinct":true,
-         "id":"36c5f2243ed24de58284a96f2a643bed8c028658",
-         "message":"This is me testing the windows client.",
-         "modified":[
-            "README.md"
-         ],
-         "removed":[
-
-         ],
-         "timestamp":"2013-02-22T14:07:13-08:00",
-         "url":"https://github.com/octokitty/testing/commit/36c5f2243ed24de58284a96f2a643bed8c028658"
-      },
-      {
-         "added":[
-            "words/madame-bovary.txt"
-         ],
-         "author":{
-            "email":"lolwut@noway.biz",
-            "name":"Garen Torikian",
-            "username":"octokitty"
-         },
-         "committer":{
-            "email":"lolwut@noway.biz",
-            "name":"Garen Torikian",
-            "username":"octokitty"
-         },
-         "distinct":true,
-         "id":"1481a2de7b2a7d02428ad93446ab166be7793fbb",
-         "message":"Rename madame-bovary.txt to words/madame-bovary.txt",
-         "modified":[
-
-         ],
-         "removed":[
-            "madame-bovary.txt"
-         ],
-         "timestamp":"2013-03-12T08:14:29-07:00",
-         "url":"https://github.com/octokitty/testing/commit/1481a2de7b2a7d02428ad93446ab166be7793fbb"
-      }
-   ],
-   "compare":"https://github.com/octokitty/testing/compare/17c497ccc7cc...1481a2de7b2a",
-   "created":false,
-   "deleted":false,
-   "forced":false,
-   "head_commit":{
-      "added":[
-         "words/madame-bovary.txt"
-      ],
-      "author":{
-         "email":"lolwut@noway.biz",
-         "name":"Garen Torikian",
-         "username":"octokitty"
-      },
-      "committer":{
-         "email":"lolwut@noway.biz",
-         "name":"Garen Torikian",
-         "username":"octokitty"
-      },
-      "distinct":true,
-      "id":"1481a2de7b2a7d02428ad93446ab166be7793fbb",
-      "message":"Rename madame-bovary.txt to words/madame-bovary.txt",
-      "modified":[
-
-      ],
-      "removed":[
-         "madame-bovary.txt"
-      ],
-      "timestamp":"2013-03-12T08:14:29-07:00",
-      "url":"https://github.com/octokitty/testing/commit/1481a2de7b2a7d02428ad93446ab166be7793fbb"
-   },
-   "pusher":{
-      "name":"none"
-   },
-   "ref":"refs/heads/master",
-   "repository":{
-      "created_at":1332977768,
-      "description":"",
-      "fork":false,
-      "forks":0,
-      "has_downloads":true,
-      "has_issues":true,
-      "has_wiki":true,
-      "homepage":"",
-      "id":3860742,
-      "language":"Ruby",
-      "master_branch":"master",
-      "name":"testing",
-      "open_issues":2,
-      "owner":{
-         "email":"lolwut@noway.biz",
-         "name":"octokitty"
-      },
-      "private":false,
-      "pushed_at":1363295520,
-      "size":2156,
-      "stargazers":1,
-      "url":"https://github.com/octokitty/testing",
-      "watchers":1
-   }
-}
-"""
+    "after": "a51f799678cf740fb02aaf1f67741035445dbad4",
+    "before": "8255c15a41e7185a81600cd274eabfb9d3e4d261",
+    "commits": [
+        {
+            "added": [],
+            "author": {
+                "email": "oscar.campos@member.fsf.org",
+                "name": "Oscar Campos",
+                "username": "DamnWidget"
+            },
+            "committer": {
+                "email": "oscar.campos@member.fsf.org",
+                "name": "Oscar Campos",
+                "username": "DamnWidget"
+            },
+            "distinct": true,
+            "id": "a51f799678cf740fb02aaf1f67741035445dbad4",
+            "message": "release [mamba, version 0.3.5]",
+            "modified": [ "README.md" ],
+            "removed": [],
+            "timestamp": "2013-05-09T04:34:45-07:00",
+            "url": "https://github.com/DamnWidget/testing/commit/a51f799678cf740fb02aaf1f67741035445dbad4"
+        }
+    ],
+    "compare": "https://github.com/DamnWidget/testing/compare/8255c15a41e7...a51f799678cf",
+    "created": false,
+    "deleted": false,
+    "forced": false,
+    "head_commit": {
+        "added": [],
+        "author": {
+            "email": "oscar.campos@member.fsf.org",
+            "name": "Oscar Campos", "username": "DamnWidget"
+        },
+        "committer": {
+            "email": "oscar.campos@member.fsf.org",
+            "name": "Oscar Campos",
+            "username": "DamnWidget"
+        },
+        "distinct": true,
+        "id": "a51f799678cf740fb02aaf1f67741035445dbad4",
+        "message": "release [mamba, version 0.3.5]",
+        "modified": [ "README.md" ],
+        "removed": [],
+        "timestamp": "2013-05-09T04:34:45-07:00",
+        "url": "https://github.com/DamnWidget/testing/commit/a51f799678cf740fb02aaf1f67741035445dbad4"
+    },
+    "pusher": {
+        "email": "oscar.campos@member.fsf.org",
+        "name": "DamnWidget"
+    },
+    "ref": "refs/heads/master",
+    "repository": {
+        "created_at": 1368046103,
+        "description": "Just a testing repo for tests with Github API",
+        "fork": false,
+        "forks": 0,
+        "has_downloads": true,
+        "has_issues": true,
+        "has_wiki": true,
+        "id": 9945666,
+        "master_branch": "master",
+        "name":  "testing",
+        "open_issues": 0,
+        "owner": {
+            "email": "oscar.campos@member.fsf.org",
+            "name": "DamnWidget"
+        },
+        "private": true,
+        "pushed_at": 1368099285,
+        "size": 148,
+        "stargazers": 0,
+        "url": "https://github.com/DamnWidget/testing",
+        "watchers": 0
+    }
+}"""
 
 
-class JsonRequest(ControllerRequest):
+class DummyRequest(ControllerRequest):
     """
     Dummy Request object with JSON encoded data and content type
     """
@@ -168,37 +103,89 @@ class JsonRequest(ControllerRequest):
     def __init__(self, postpath, params, session=None):
         ControllerRequest.__init__(self, postpath, params, session)
         self.method = 'POST'
-        self.requestHeaders.addRawHeader('content-type', 'application/json')
-        self.content.truncate()
-        self.content.write(payload)
-        self.content.seek(0, 0)
+        self.requestHeaders.addRawHeader(
+            'content-type', 'application/x-www-form-urlencoded')
+        self.requestHeaders.addRawHeader('content-length', '2543')
+
+
+class DummyRelease(object):
+    """Dummy Release Stub
+    """
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.iteritems():
+            setattr(self, k, v)
+
+    def build_release(self, release_version):
+        self.release_version = release_version
+
+
+class DummyFile(DummyRelease):
+    """Dummy File Stub
+    """
+
+    def __init__(self, **kwargs):
+        super(DummyFile, self).__init__(**kwargs)
+
+    def build_release_files(self, release):
+        self.release = release
+
+
+hooker = Hooker()
+hooker.render = lambda request: hooker._router.dispatch(hooker, request)
 
 
 class ControllerHookerTest(unittest.TestCase):
     """Test Hooker controller
     """
 
-    @defer.inlineCallbacks
-    def test_payload_parsing(self):
-        """Just test the correct payload JSON parsing
-        """
-
-        hooker = Hooker()
+    def setUp(self):
         if GNU_LINUX:
             self.addCleanup(hooker._styles_manager.notifier.loseConnection)
             self.addCleanup(hooker._scripts_manager.notifier.loseConnection)
 
-        request = JsonRequest(['/github_update'], {'payload': payload})
+    def request(self, pay=None):
 
-        result = yield self._render(hooker, request)
-        print result.written
+        pay = payload if pay is None else pay
+        request = DummyRequest(
+            ['/github_update/' + urllib.urlencode({'payload': pay})], {}
+        )
+        request.release = DummyRelease(release_date=datetime.datetime.now())
+        request.rfile = DummyFile()
 
-    def _render(self, controller, request):
-        result = controller.render(request)
-        if result is server.NOT_DONE_YET:
-            if request.finished:
-                return defer.succeed(request)
-            else:
-                return request.notifyFinish().addCallback(lambda _: request)
-        else:
-            raise ValueError('Unexpected return value: {}'.format(result))
+        return request
+
+    @defer.inlineCallbacks
+    def test_payload_fails_on_no_a_release_commit(self):
+
+        result = yield hooker.render(self.request())
+        self.assertEqual(result.code, 200)
+        self.assertEqual(result.subject, 'ignored not a release')
+
+    @defer.inlineCallbacks
+    def test_payload_fails_on_branch_deletion(self):
+
+        pay = payload.replace(
+            'a51f799678cf740fb02aaf1f67741035445dbad4',
+            '0000000000000000000000000000000000000000'
+        )
+
+        result = yield hooker.render(self.request(pay))
+        self.assertEqual(result.code, 200)
+        self.assertEqual(result.subject, 'ignored branch deletion')
+
+    @defer.inlineCallbacks
+    def test_payload_fails_on_not_branch_commit_tags(self):
+
+        pay = payload.replace('refs/heads/master', 'refs/tags/1.0')
+
+        result = yield hooker.render(self.request(pay))
+        self.assertEqual(result.code, 200)
+        self.assertEqual(result.subject, 'ignored not a branch')
+
+    @defer.inlineCallbacks
+    def test_payload_success_on_release_commit(self):
+
+        result = yield hooker.render(self.request())
+        self.assertEqual(result.code, 200)
+        self.assertEqual(result.subject, 'released')
