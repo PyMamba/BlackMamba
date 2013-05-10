@@ -41,10 +41,6 @@ class Hooker(controller.Controller):
         """
         super(Hooker, self).__init__()
 
-    @route('/')
-    def root(self, request, **kwargs):
-        return Ok('I am the Hooker, hello world!')
-
     @route('/github_update/<payload>', method='POST')
     def github_update(self, request, payload, **kwargs):
         """Process an update from GitHub

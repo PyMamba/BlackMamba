@@ -131,6 +131,8 @@ class DummyFile(DummyRelease):
         self.release = release
 
 
+# we have to use a global object for our controller because router instances
+# share their routes
 hooker = Hooker()
 hooker.render = lambda request: hooker._router.dispatch(hooker, request)
 
@@ -158,7 +160,9 @@ class ControllerHookerTest(unittest.TestCase):
     @defer.inlineCallbacks
     def test_payload_fails_on_no_a_release_commit(self):
 
-        result = yield hooker.render(self.request())
+        pay = payload.replace('release [mamba, version 0.3.5]', 'None')
+
+        result = yield hooker.render(self.request(pay))
         self.assertEqual(result.code, 200)
         self.assertEqual(result.subject, 'ignored not a release')
 
@@ -189,3 +193,10 @@ class ControllerHookerTest(unittest.TestCase):
         result = yield hooker.render(self.request())
         self.assertEqual(result.code, 200)
         self.assertEqual(result.subject, 'released')
+
+    @defer.inlineCallbacks
+    def test_hooker_return_404_nof_found_on_root(self):
+
+        request = DummyRequest(['/'], {})
+        result = yield hooker.render(request)
+        self.assertEqual(result.code, 404)
