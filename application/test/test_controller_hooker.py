@@ -4,13 +4,10 @@
 
 import urllib
 import datetime
-from cStringIO import StringIO
 
-from twisted.web import server
 from twisted.trial import unittest
 from twisted.internet import defer
 
-from mamba.web import routing
 from mamba.core import GNU_LINUX
 from mamba.test.test_controller import ControllerRequest
 

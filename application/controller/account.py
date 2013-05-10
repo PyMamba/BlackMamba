@@ -53,7 +53,7 @@ class Account(controller.Controller):
     @route('/sign_in/<email>/<key>', method='POST')
     @defer.inlineCallbacks
     def sign_in(self, request, email, key, **kwargs):
-        """Sign in into usser's account
+        """Sign in into user's account
         """
 
         session = request.getSession()
@@ -65,9 +65,10 @@ class Account(controller.Controller):
                        'another account you must sign out first'
             })
 
+        print('Attempting to sign on to user {email}'.format(email=email))
         log.msg('Attempting to sign on to user {email}'.format(email=email))
 
-        account = yield User().login(email, sha512(key).hexdigest())
+        account = yield User().sign_in(email, sha512(key).hexdigest())
         if account is not None:
             log.msg('Found user {email}'.format(email=email))
             log.msg('Authenticating session {uuid}'.format(uuid=session.uuid))
