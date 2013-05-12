@@ -7,8 +7,6 @@ import datetime
 
 from twisted.trial import unittest
 from twisted.internet import defer
-
-from mamba.core import GNU_LINUX
 from mamba.test.test_controller import ControllerRequest
 
 from application.controller.hooker import Hooker
@@ -128,20 +126,15 @@ class DummyFile(DummyRelease):
         self.release = release
 
 
-# we have to use a global object for our controller because router instances
-# share their routes
-hooker = Hooker()
-hooker.render = lambda request: hooker._router.dispatch(hooker, request)
-
-
 class ControllerHookerTest(unittest.TestCase):
     """Test Hooker controller
     """
 
+    hooker = Hooker()
+
     def setUp(self):
-        if GNU_LINUX:
-            self.addCleanup(hooker._styles_manager.notifier.loseConnection)
-            self.addCleanup(hooker._scripts_manager.notifier.loseConnection)
+        self.hooker.render = lambda r: self.hooker._router.dispatch(
+            self.hooker, r)
 
     def request(self, pay=None):
 
@@ -159,7 +152,7 @@ class ControllerHookerTest(unittest.TestCase):
 
         pay = payload.replace('release [mamba, version 0.3.5]', 'None')
 
-        result = yield hooker.render(self.request(pay))
+        result = yield self.hooker.render(self.request(pay))
         self.assertEqual(result.code, 200)
         self.assertEqual(result.subject, 'ignored not a release')
 
@@ -171,7 +164,7 @@ class ControllerHookerTest(unittest.TestCase):
             '0000000000000000000000000000000000000000'
         )
 
-        result = yield hooker.render(self.request(pay))
+        result = yield self.hooker.render(self.request(pay))
         self.assertEqual(result.code, 200)
         self.assertEqual(result.subject, 'ignored branch deletion')
 
@@ -180,14 +173,14 @@ class ControllerHookerTest(unittest.TestCase):
 
         pay = payload.replace('refs/heads/master', 'refs/tags/1.0')
 
-        result = yield hooker.render(self.request(pay))
+        result = yield self.hooker.render(self.request(pay))
         self.assertEqual(result.code, 200)
         self.assertEqual(result.subject, 'ignored not a branch')
 
     @defer.inlineCallbacks
     def test_payload_success_on_release_commit(self):
 
-        result = yield hooker.render(self.request())
+        result = yield self.hooker.render(self.request())
         self.assertEqual(result.code, 200)
         self.assertEqual(result.subject, 'released')
 
@@ -195,5 +188,5 @@ class ControllerHookerTest(unittest.TestCase):
     def test_hooker_return_404_nof_found_on_root(self):
 
         request = DummyRequest(['/'], {})
-        result = yield hooker.render(request)
+        result = yield self.hooker.render(request)
         self.assertEqual(result.code, 404)

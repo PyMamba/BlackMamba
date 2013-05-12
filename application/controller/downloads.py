@@ -13,7 +13,6 @@
 from twisted.internet import defer
 from zope.interface import implements
 
-from mamba.utils import config
 from mamba.web.response import Ok
 from mamba.application import route
 from mamba.core import interfaces, templating
@@ -42,55 +41,6 @@ class Downloads(Controller):
 
         self.template = templating.Template(controller=self)
 
-    @property
-    @defer.inlineCallbacks
-    def last_release_files(self):
-        """Return back all the files from the last release
-        """
-
-        files = []
-        release = yield Release().last
-
-        if release is not None:
-            for rfile in release.files:
-                rfile.link = '/download/latest/{}'.format(rfile.type_string())
-                rfile.md5 = '/download/digest/{}'.format(rfile.id)
-                files.append(rfile)
-
-        defer.returnValue(files)
-
-    @property
-    @defer.inlineCallbacks
-    def old_release_files(self):
-        """Return back all the files from older releases
-        """
-        repository = config.Application().git_repository
-
-        files = []
-        releases = yield Release().older
-        for release in releases:
-            rel = {'release': release, 'files': []}
-            if release.files.count() == 0:
-                rfile = File()
-                rfile.name = u'mamba-framework-{}.tar.gz'.format(
-                    release.version)
-                rfile.type = 0
-                rfile.platform = 1
-                rfile.size = 0
-                rfile.link = '{}/archive/{}.tar.gz'.format(
-                    repository, release.version)
-            else:
-                for rfile in release.files:
-                    rfile.link = '/download/release/{}/{}'.format(
-                        release.version, rfile.type_string()
-                    )
-                    rfile.md5 = '/download/digest/{}'.format(rfile.id)
-
-            rel['files'].append(rfile)
-            files.append(rel)
-
-        defer.returnValue(files)
-
     @route('/')
     @defer.inlineCallbacks
     def root(self, request, **kwargs):
@@ -100,12 +50,11 @@ class Downloads(Controller):
         controller.toggle_menu(controller.DOWNLOAD)
         template_args = controller.template_args
 
-        template_args['releases'] = yield self.last_release_files
-        template_args['old_releases'] = yield self.old_release_files
+        template_args['releases'] = yield Release().last_release_files()
+        template_args['old_releases'] = yield Release().old_release_files()
 
         defer.returnValue(
-            Ok(self.template.render(**template_args).encode('utf-8'))
-        )
+            Ok(self.template.render(**template_args).encode('utf-8')))
 
     @route('/latest/<type>')
     @defer.inlineCallbacks

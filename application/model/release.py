@@ -12,11 +12,12 @@
 
 import datetime
 
-from twisted.python import log
+from mamba.utils import config
+from mamba.application import model
 from storm.twisted.transact import transact
+
 from storm.locals import Int, Unicode, DateTime, Storm, ReferenceSet, Desc
 
-from mamba.application import model
 from application.model.file import File
 
 
@@ -38,27 +39,59 @@ class Release(model.Model, Storm):
     def __init_(self):
         super(Release, self).__init__()
 
-    @property
     @transact
-    def last(self):
-        """Get the last release source tarball
+    def last_release_files(self):
+        """Get the last release files
         """
 
+        files = []
         store = self.database.store()
-        data = store.find(self.__class__).order_by(self.__class__.id).last()
+        release = store.find(self.__class__).order_by(self.__class__.id).last()
+        if release is not None:
+            for r in release.files:
+                rfile = File().copy(r)
+                rfile.link = '/download/latest/{}'.format(r.type_string())
+                rfile.md5 = '/download/digest/{}'.format(r.id)
+                files.append(rfile)
 
-        return data
+        return files
 
-    @property
     @transact
-    def older(self):
-        """Get older releases
+    def old_release_files(self):
+        """Get all the files from older releases
         """
 
-        store = self.database.store()
-        data = store.find(self.__class__).order_by(Desc(self.__class__.id))[1:]
+        repository = config.Application().git_repository
 
-        return data
+        files = []
+        store = self.database.store()
+        releases = store.find(self.__class__).order_by(Desc(
+            self.__class__.id))[1:]
+        for r in releases:
+            release = Release().copy(r)
+            rel = {'release': release, 'files': []}
+            if r.files.count() == 0:
+                rfile = File()
+                rfile.name = u'mamba-framework-{}.tar.gz'.format(
+                    release.version)
+                rfile.type = 0
+                rfile.platform = 1
+                rfile.size = 0
+                rfile.link = '{}/archive/{}.tar.gz'.format(
+                    repository, release.version)
+                rel['files'].append(rfile)
+            else:
+                for rf in release.files:
+                    rfile = File().copy(rf)
+                    rfile.link = '/download/release/{}/{}'.format(
+                        release.version, rfile.type_string()
+                    )
+                    rfile.md5 = '/download/digest/{}'.format(rfile.id)
+                    rel['files'].append(rfile)
+
+            files.append(rel)
+
+        return files
 
     def build_release(self, version):
         """Build a new release with the given version

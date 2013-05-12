@@ -13,7 +13,6 @@
 from twisted.python import log
 from twisted.web.client import Agent
 from twisted.internet import reactor, defer
-from storm.twisted.transact import transact
 from twisted.web.http_headers import Headers
 from storm.locals import Int, Unicode, DateTime, Storm, Reference
 from mamba.application import model

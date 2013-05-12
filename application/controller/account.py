@@ -65,7 +65,6 @@ class Account(controller.Controller):
                        'another account you must sign out first'
             })
 
-        print('Attempting to sign on to user {email}'.format(email=email))
         log.msg('Attempting to sign on to user {email}'.format(email=email))
 
         account = yield User().sign_in(email, sha512(key).hexdigest())
@@ -86,7 +85,7 @@ class Account(controller.Controller):
         """
 
         session = request.getSession()
-        if session.uid == uid:
+        if session.uuid == uid:
             log.msg('Disconnecting session {uid} for account {email}'.format(
                 uid=uid, email=session.user.email
             ))
@@ -106,6 +105,7 @@ class Account(controller.Controller):
         return result
 
     @route('/register', method='POST')
+    @defer.inlineCallbacks
     def register(self, request, **kwargs):
         """
         Register a new user with those params on kwargs
@@ -126,12 +126,12 @@ class Account(controller.Controller):
         :type twitter: str
         """
 
-        errors = self._check_register_errors(kwargs)
+        errors = yield self._check_register_errors(**kwargs)
         if len(errors) > 0:
-            return {'success': False, 'msg': '\n'.join(errors)}
+            defer.returnValue({'success': False, 'msg': '\n'.join(errors)})
 
         user = User()
-        for key, value in kwargs:
+        for key, value in kwargs.iteritems():
             if key == 'key':
                 value = sha512(value).hexdigest()
 
@@ -139,7 +139,7 @@ class Account(controller.Controller):
                 setattr(user, key, value)
 
         user.create()
-        return {'success': True}
+        defer.returnValue({'success': True})
 
     @route('/delete/<key>', method='POST')
     @authed
@@ -148,9 +148,9 @@ class Account(controller.Controller):
         """
 
         session = request.getSession()
-        if sha512(key).hexdigest == session.user.key:
+        if sha512(key).hexdigest() == session.user.key:
             log.msg('Deleting account {email}'.format(
-                mail=session.user.email)
+                email=session.user.email)
             )
 
             User().delete(session.user)
@@ -167,7 +167,8 @@ class Account(controller.Controller):
 
         return result
 
-    def _check_register_erros(self, **kwargs):
+    @defer.inlineCallbacks
+    def _check_register_errors(self, **kwargs):
         """
         Just check common register errors
 
@@ -200,7 +201,7 @@ class Account(controller.Controller):
 
         if 'github_profile' in kwargs:
             # check if the given Github account really exists
-            response = self._check_services_account(
+            response = yield self._check_services_account(
                 kwargs['github_profile'], 'github'
             )
             if response.code == 404:
@@ -208,24 +209,27 @@ class Account(controller.Controller):
 
         if 'bitbucket_profile' in kwargs:
             # check if teh given BitBucket account really exists
-            response = self._check_services_account(
+            response = yield self._check_services_account(
                 kwargs['bitbucket_profile'], 'bitbucket'
             )
             if response.code == 404:
-                errors.append('Non valid BitBukcet account provided')
+                errors.append('Non valid BitBucket account provided')
 
         if 'twitter' in kwargs:
             # check if the given Twitter account exists
-            response = self._check_services_account(
+            response = yield self._check_services_account(
                 kwargs['twitter'], 'twitter'
             )
+            if response.code == 404:
+                errors.append('Non valid Twitter account provided')
 
-        return errors
+        defer.returnValue(errors)
 
     @defer.inlineCallbacks
     def _check_services_account(self, account, service):
         """Just check that GitHub or BitBucket accounts exists
         """
+
         services = {
             'github': 'github.com',
             'bitbucket': 'bitbucket.org',
