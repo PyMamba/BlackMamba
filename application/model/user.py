@@ -49,6 +49,6 @@ class User(model.Model):
         store = self.database.store()
         user = store.find(User, User.email == email, User.key == key).one()
         if user is not None:
-            user = self.copy(user)
+            user = User().copy(user)
 
         return user
