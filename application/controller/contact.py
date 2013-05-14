@@ -48,24 +48,23 @@ class Contact(Controller):
 
         return Ok(self.template.render(**template_args).encode('utf-8'))
 
-    @route('/form_request', method='POST')
+    @route('/form_request/<name>/<email>/<content>', method='POST')
     @defer.inlineCallbacks
-    def form_request(self, request, **kwargs):
+    def form_request(self, request, name, email, content, **kwargs):
 
         message = (
             'New message from {name} <{email}> using contact '
             'form on main site\n\n{content}'.format(
-                name=kwargs.get('name'),
-                email=kwargs.get('email'),
-                content=kwargs.get('content')
+                name=name,
+                email=email,
+                content=content
             )
         )
 
         result = yield smtp.sendmail(
             message=message,
-            subject='[PyMamba] Contact Form Request {}'.format(
-                kwargs.get('name')),
-            sender='contact@pymmaba.com',
+            subject='[PyMamba] Contact Form Request {}'.format(name),
+            sender='contact@pymamba.com',
             recipients=Application().contact_recipients,
             host='localhost'
         )
