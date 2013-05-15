@@ -2,20 +2,37 @@
 # Copyright (c) 2013 - Oscar Campos <oscar.campos@member.fsf.org>
 # See LICENSE for details
 
+import json
+from cStringIO import StringIO
+
 from twisted.web import http
 from twisted.trial import unittest
 from twisted.internet import defer
+from twisted.web.http_headers import Headers
 from twisted.python.monkey import MonkeyPatcher
+from twisted.web.test.test_web import DummyRequest
 
 from mamba.utils import config
-from mamba.test.test_controller import ControllerRequest
 
 from application.lib import smtp
 from application.controller.contact import Contact
 
 config.Application('config/application.json')
 assert(config.Database().loaded)
-print dir(config.Application())
+
+
+class ContactRequest(DummyRequest):
+    """Contact Dummy Request
+    """
+
+    def __init__(self, postpath, params):
+        DummyRequest.__init__(self, postpath, None)
+        self.content = StringIO()
+        self.content.write(json.dumps(params))
+        self.content.seek(0, 0)
+        self.requestHeaders = Headers()
+        self.method = 'POST'
+        self.requestHeaders.addRawHeader('content-type', 'application/json')
 
 
 @defer.inlineCallbacks
@@ -33,18 +50,6 @@ def sendmail(message, subject, sender, recipients, host):
     defer.returnValue(True)
 
 
-class DummyRequest(ControllerRequest):
-    """
-    Dummy Request object with JSON encoded data and content type
-    """
-
-    def __init__(self, postpath, params, session=None):
-        ControllerRequest.__init__(self, postpath, params, session)
-        self.method = 'POST'
-        self.requestHeaders.addRawHeader(
-            'content-type', 'application/x-www-form-urlencoded')
-
-
 class ControllerContactTest(unittest.TestCase):
     """Tests for contact controller
     """
@@ -60,9 +65,11 @@ class ControllerContactTest(unittest.TestCase):
     @defer.inlineCallbacks
     def test_invalid_email(self):
 
-        request = DummyRequest(['/form_request/{}/{}/{}'.format(
-            'anonymous', 'anon@ymous.com', 'This is the content'
-        )], {})
+        request = ContactRequest(['/form_request'], {
+            'name': 'anonymous',
+            'email': 'anon@ymous.com',
+            'content': 'This is the content'
+        })
 
         result = yield self.contact.render(request)
         self.assertEqual(result.code, http.OK)

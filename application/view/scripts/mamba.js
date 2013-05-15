@@ -11,7 +11,8 @@ $(function () {
 
     $('#contact').submit(function(event) {
         $.ajax(
-{            url: '/contact/form_request',
+        {
+            url: '/contact/form_request',
             type: 'POST',
             dataType: 'json',
             data: {
