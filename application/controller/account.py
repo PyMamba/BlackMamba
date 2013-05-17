@@ -80,14 +80,14 @@ class Account(controller.Controller):
 
     @route('/sign_out/<uid>', method='POST')
     @authed
-    def sign_out(self, request, uid, **kwargs):
+    def sign_out(self, request, uuid, **kwargs):
         """Just sign off an already signed in user
         """
 
         session = request.getSession()
-        if session.uuid == uid:
-            log.msg('Disconnecting session {uid} for account {email}'.format(
-                uid=uid, email=session.user.email
+        if session.uuid == uuid:
+            log.msg('Disconnecting session {uuid} for account {email}'.format(
+                uuid=uuid, email=session.user.email
             ))
 
             del session.user
@@ -96,8 +96,8 @@ class Account(controller.Controller):
             result = {'success': True}
         else:
             log.msg(
-                'sign_out called with uid {uid} but session.uid '
-                'is {session_id}'.format(uid=uid, session_id=session.uid)
+                'sign_out called with uid {uuid} but session.uuid '
+                'is {session_id}'.format(uuid=uuid, session_id=session.uuid)
             )
 
             result = {'success': False, 'msg': 'Unknown uid'}
