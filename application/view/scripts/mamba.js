@@ -27,6 +27,8 @@ $(function () {
                 $('.fail').modal({keyboard: true});
             }
         });
+
+        event.preventDefault();
     });
 
 });

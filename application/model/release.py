@@ -39,6 +39,13 @@ class Release(model.Model, Storm):
     def __init_(self):
         super(Release, self).__init__()
 
+    @property
+    def last(self):
+        """Get the last release files
+        """
+
+        return self.last_release_files()
+
     @transact
     def last_release_files(self):
         """Get the last release files

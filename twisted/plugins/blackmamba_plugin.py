@@ -15,8 +15,9 @@ settings = config.Application('config/application.json')
 
 
 class Options(usage.Options):
+
     optParameters = [
-        ['port', 'p', settings.port, 'The port number to listen on']
+        ['port', None, settings.port, 'The port number to listen on']
     ]
 
 

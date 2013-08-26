@@ -38,10 +38,9 @@ class Downloads(Controller):
         Put your initialization code here
         """
         super(Downloads, self).__init__()
-
         self.template = templating.Template(controller=self)
 
-    @route('/')
+    @route('/', method=['GET', 'POST'])
     @defer.inlineCallbacks
     def root(self, request, **kwargs):
         """Renders downloads main page
@@ -64,7 +63,7 @@ class Downloads(Controller):
 
         release = yield Release().last
         source = None
-        for f in release.files:
+        for f in release:
             if f.type_string() == type:
                 source = f
 
@@ -88,5 +87,5 @@ class Downloads(Controller):
         """Return back a string with the given file MD5
         """
 
-        file = yield File().read(file_id)
+        file = yield File().read(file_id, True)
         defer.returnValue(str(file.md5_sum) if file is not None else '')

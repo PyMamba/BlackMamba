@@ -30,7 +30,7 @@ class Contact(Controller):
 
     implements(interfaces.IController)
     name = 'Contact'
-    loaded = False
+    # loaded = False
     __route__ = 'contact'
 
     def __init__(self):
@@ -52,6 +52,7 @@ class Contact(Controller):
     @defer.inlineCallbacks
     def form_request(self, request, **kwargs):
 
+        print('Pollico asao')
         message = (
             'New message from {name} <{email}> using contact '
             'form on main site\n\n{content}'.format(

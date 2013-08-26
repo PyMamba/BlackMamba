@@ -63,7 +63,7 @@ class ControllerContactTest(unittest.TestCase):
         monkey_patcher.patch()
 
     @defer.inlineCallbacks
-    def test_invalid_email(self):
+    def test_email(self):
 
         request = ContactRequest(['/form_request'], {
             'name': 'anonymous',

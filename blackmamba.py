@@ -13,8 +13,8 @@
 from twisted.web import server
 from twisted.application import service
 
-from mamba import Mamba
-from mamba.web import Page
+from mamba.application.app import Mamba
+from mamba.web.page import Page
 
 
 def MambaApplicationFactory(settings):
