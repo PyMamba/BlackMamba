@@ -78,7 +78,7 @@ class Account(controller.Controller):
             log.msg('Account don\'t exists or invalid key!')
             defer.returnValue({'success': False, 'msg': 'Invalid credentials'})
 
-    @route('/sign_out/<uid>', method='POST')
+    @route('/sign_out/<uuid>', method='POST')
     @authed
     def sign_out(self, request, uuid, **kwargs):
         """Just sign off an already signed in user
@@ -232,8 +232,8 @@ class Account(controller.Controller):
 
         services = {
             'github': 'github.com',
-            'bitbucket': 'bitbucket.org',
-            'twitter': 'twitter.com'
+            'twitter': 'twitter.com',
+            'bitbucket': 'bitbucket.org'
         }
 
         context_factory = WebClientContextFactory()
