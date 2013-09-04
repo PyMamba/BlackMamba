@@ -34,7 +34,7 @@ class Release(model.Model, Storm):
     release_date = DateTime()
 
     # references
-    files = ReferenceSet('Release.id', File.release_id)
+    files = ReferenceSet('Release.id', 'File.release_id')
 
     def __init_(self):
         super(Release, self).__init__()
