@@ -60,7 +60,7 @@ class File(model.Model, Storm):
         """Update downloads acount number by one
         """
 
-        copy = yield File().read(self.id)
+        copy = yield File().read(self.id, True)
         copy.downloads = self.downloads + 1
         copy.update()
 
