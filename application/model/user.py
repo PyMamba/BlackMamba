@@ -11,16 +11,17 @@
 """
 
 from storm.twisted.transact import transact
-from storm.locals import Int, Unicode, DateTime
+from storm.locals import Int, Unicode, DateTime, Storm, ReferenceSet
 
 from mamba.application import model
 
 
-class User(model.Model):
+class User(model.Model, Storm):
     """
     Users model for BlackMamba
     """
 
+    __metaclass__ = model.MambaStorm
     __storm_table__ = 'users'
 
     name = Unicode(size=128)
@@ -33,6 +34,9 @@ class User(model.Model):
     twitter = Unicode(size=64)
     registered = DateTime()
     last_login = DateTime()
+
+    # references
+    posts = ReferenceSet('User.id', 'Post.id')
 
     def __init__(self):
         super(User, self).__init__()
