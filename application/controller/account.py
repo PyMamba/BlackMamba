@@ -16,7 +16,7 @@ from hashlib import sha512
 
 from twisted.python import log
 from twisted.web.client import Agent
-from zope.interface import implements
+from zope.interface import implementer
 from twisted.internet import defer, reactor
 from twisted.web.http_headers import Headers
 
@@ -30,12 +30,12 @@ from application.lib.permissions import authed
 from application.lib.ssl import WebClientContextFactory
 
 
+@implementer(interfaces.IController)
 class Account(controller.Controller):
     """
     User and session related stuff
     """
 
-    implements(interfaces.IController)
     name = 'Account'
     loaded = False
     __route__ = 'account'

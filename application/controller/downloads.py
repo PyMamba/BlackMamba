@@ -11,7 +11,7 @@
 """
 
 from twisted.internet import defer
-from zope.interface import implements
+from zope.interface import implementer
 
 from mamba.web.response import Ok
 from mamba.application import route
@@ -23,12 +23,12 @@ from application.model.file import File
 from application.model.release import Release
 
 
+@implementer(interfaces.IController)
 class Downloads(Controller):
     """
     Download controller from BlackMamba
     """
 
-    implements(interfaces.IController)
     name = 'Downloads'
     loaded = False
     __route__ = 'download'

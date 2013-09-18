@@ -11,7 +11,7 @@
 """
 
 from twisted.internet import defer
-from zope.interface import implements
+from zope.interface import implementer
 
 from mamba.application import route
 from mamba.utils.config import Application
@@ -23,12 +23,12 @@ from application.lib import smtp
 from application import controller
 
 
+@implementer(interfaces.IController)
 class Contact(Controller):
     """
     Contact Controller
     """
 
-    implements(interfaces.IController)
     name = 'Contact'
     # loaded = False
     __route__ = 'contact'
@@ -52,7 +52,6 @@ class Contact(Controller):
     @defer.inlineCallbacks
     def form_request(self, request, **kwargs):
 
-        print('Pollico asao')
         message = (
             'New message from {name} <{email}> using contact '
             'form on main site\n\n{content}'.format(
