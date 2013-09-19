@@ -5,6 +5,13 @@
     "port": 1936,
     "log_file": "service.log",
     "debug": false,
+    "development": true,
     "contact_recipients": ["mamba-support@googlegroups.com"],
-    "git_repository": "https://github.com/DamnWidget/mamba"
+    "git_repository": "https://github.com/DamnWidget/mamba",
+    "blog": {
+        "posts_limit": 5,
+        "comments": {
+            "allowed": true
+        }
+    }
 }

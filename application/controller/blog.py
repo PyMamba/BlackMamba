@@ -13,6 +13,7 @@
 from twisted.internet import defer
 from zope.interface import implementer
 
+from mamba.utils import config
 from mamba.web.response import Ok
 from mamba.application import route
 from mamba.core import interfaces, templating
@@ -51,14 +52,22 @@ class Blog(Controller):
 
         controller.toggle_menu(controller.BLOG)
         template_args = controller.template_args
-        posts, total = yield Post().get_posts(offset)
+
+        limit = config.Application().blog['posts_limit']
+        posts, total = yield Post().get_posts(offset, limit)
+        if offset > total:
+            defer.returnValue(
+                Ok(self.template.render(**template_args).encode('utf8')))
+
         template_args['posts'] = posts
-        template_args['pagination'] = self.generate_pagination(offset, total)
+        template_args['pagination'] = self.generate_pagination(
+            offset, limit, total
+        )
 
         defer.returnValue(
             Ok(self.template.render(**template_args).encode('utf8')))
 
-    def generate_pagination(self, offset, total):
+    def generate_pagination(self, offset, limit, total):
         """Generate a paginator
         """
 
@@ -70,7 +79,7 @@ class Blog(Controller):
             'link': offset > 1
         })
 
-        steps = total / 10 if total % 10 == 0 else (total / 10) + 1
+        steps = total / limit if total % limit == 0 else (total / limit) + 1
         for step in range(1, steps + 1):
             pagination.append({
                 'class': 'active' if offset == step else False,

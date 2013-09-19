@@ -70,7 +70,7 @@ class Post(model.Model, Storm):
         posts = []
         result = self.database.store().find(Post).order_by(Desc(Post.id))
         total_posts = result.count()
-        for post in result.config(offset=(offset - 1) * 10, limit=limit):
+        for post in result.config(offset=(offset - 1) * limit, limit=limit):
             copy = Post().copy(post)
             copy.author = User().copy(post.author)
             posts.append(copy)
