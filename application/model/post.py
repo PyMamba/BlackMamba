@@ -68,9 +68,6 @@ class Post(model.Model, Storm):
         """
 
         posts = []
-        if offset is None or offset <= 0:
-            offset = 1
-
         result = self.database.store().find(Post).order_by(Desc(Post.id))
         total_posts = result.count()
         for post in result.config(offset=(offset - 1) * 10, limit=limit):

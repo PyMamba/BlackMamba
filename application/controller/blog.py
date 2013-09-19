@@ -44,6 +44,8 @@ class Blog(Controller):
 
         try:
             offset = int(kwargs.get('page'))
+            if offset <= 0:
+                offset = 1
         except (ValueError, TypeError):
             offset = 1
 
@@ -59,12 +61,6 @@ class Blog(Controller):
     def generate_pagination(self, offset, total):
         """Generate a paginator
         """
-
-        if offset is None:
-            return False
-
-        if offset <= 0:
-            offset = 1
 
         pagination = []
         pagination.append({
