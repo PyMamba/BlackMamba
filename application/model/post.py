@@ -10,13 +10,19 @@
 .. modelauthor:: Oscar Campos <oscar.campos@member.fsf.org>
 """
 
+# import sys
 import datetime
 
 from storm.expr import Desc
+# from storm.tracer import debug
 from storm.twisted.transact import transact
 from storm.locals import Storm, Int, Unicode, DateTime, Reference, ReferenceSet
 
 from mamba.application import model
+
+from application.model.user import User
+
+# debug(True, stream=sys.stdout)
 
 
 class Post(model.Model, Storm):
@@ -29,6 +35,7 @@ class Post(model.Model, Storm):
 
     id = Int(primary=True, unsigned=True, auto_increment=True)
     title = Unicode(size=256)
+    image = Unicode(default=None, size=256)
     content = Unicode()
     publish_date = DateTime(default=datetime.datetime.now())
     last_update = DateTime()
@@ -51,7 +58,7 @@ class Post(model.Model, Storm):
             self.__class__.id).last()
 
     @transact
-    def get_posts(self, limit=10, offset=0):
+    def get_posts(self, offset, limit=10):
         """Get posts starting in offset with the given limit
 
         :param offset: the record from where to start
@@ -60,5 +67,15 @@ class Post(model.Model, Storm):
         :type limit: int
         """
 
+        posts = []
+        if offset is None or offset <= 0:
+            offset = 1
+
         result = self.database.store().find(Post).order_by(Desc(Post.id))
-        return result[offset:][:limit]
+        total_posts = result.count()
+        for post in result.config(offset=(offset - 1) * 10, limit=limit):
+            copy = Post().copy(post)
+            copy.author = User().copy(post.author)
+            posts.append(copy)
+
+        return posts, total_posts

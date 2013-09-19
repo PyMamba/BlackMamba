@@ -208,6 +208,33 @@ body > .navbar .nav > .active > a:focus {
   margin-bottom: 60px;
 }
 
+.blog p.last-edit {
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.blog p.written {
+  font-size: 14px;
+}
+
+.blog .post-image {
+  margin: 24px;
+  float: left;
+}
+
+.blog .post-body {
+  margin-top: 20px;
+}
+
+.blog .postfooter {
+  margin-top: 20px;
+}
+
+.blog .pagination {
+  margin-top: 60px;
+}
+
+
 /* footer */
 
 .footer {
