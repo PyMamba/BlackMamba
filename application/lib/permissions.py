@@ -20,12 +20,12 @@ from mamba.web.response import Unauthorized
 from application.lib import bitvector
 
 
-READ = bitvector.BV00
-COMMENT = bitvector.BV01
-WRITE = bitvector.BV02
-EDIT_OWN = bitvector.BV03
-EDIT_OTHERS = bitvector.BV04
-MODERATE = bitvector.BV05
+READ = bitvector.BV0
+COMMENT = bitvector.BV1
+WRITE = bitvector.BV2
+EDIT_OWN = bitvector.BV3
+EDIT_OTHERS = bitvector.BV4
+MODERATE = bitvector.BV5
 # ..
 EVERYTHING = bitvector.BV31
 
