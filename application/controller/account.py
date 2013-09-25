@@ -24,6 +24,7 @@ from mamba.web.response import Ok
 from mamba.core import interfaces
 from mamba.application import route
 from mamba.application import controller
+from mamba.utils.checkers import Checkers
 
 from application.model.user import User
 from application.lib.permissions import authed
@@ -65,7 +66,7 @@ class Account(controller.Controller):
                        'another account you must sign out first'
             })
 
-        log.msg('Attempting to sign on to user {email}'.format(email=email))
+        log.msg('Attempting to sign in to user {email}'.format(email=email))
 
         account = yield User().sign_in(email, sha512(key).hexdigest())
         if account is not None:
@@ -183,14 +184,19 @@ class Account(controller.Controller):
 
         if 'email' not in kwargs:
             errors.append('Email is required')
+        else:
+            if not Checkers.check_email(kwargs['email']):
+                errors.append('Email should be a valid email')
 
         if 'key' not in kwargs:
             kwargs['key'] = ''.join(random.choice(
                 string.ascii_letters + string.digits) for x in range(12)
             )
 
-        if len(kwargs['key']) < 8:
-            errors.append('Key should contain 8 caracters at least')
+        success, fails = Checkers.check_password(kwargs['key'])
+        if not success:
+            for error in fails:
+                errors.append(error)
 
         if kwargs['key'].count(kwargs['key'][0]) == len(kwargs['key']):
             errors.append(
