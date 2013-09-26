@@ -11,20 +11,20 @@ template_args = {
     'menu_options': [
         {'path': '/', 'label': 'Home', 'active': False, 'available': True},
         {
-            'path': 'gettingstart', 'label': 'Get started',
+            'path': '/gettingstart', 'label': 'Get started',
             'active': False, 'available': True
         },
         {
-            'path': 'docs', 'label': 'Documentation',
+            'path': '/docs', 'label': 'Documentation',
             'active': False, 'available': True
         },
         {
-            'path': 'download', 'label': 'Download',
+            'path': '/download', 'label': 'Download',
             'active': False, 'available': True
         },
-        {'path': 'blog', 'label': 'Blog', 'active': False, 'available': True},
+        {'path': '/blog', 'label': 'Blog', 'active': False, 'available': True},
         {
-            'path': 'contact', 'label': 'Contact',
+            'path': '/contact', 'label': 'Contact',
             'active': True, 'available': True
         },
     ]
