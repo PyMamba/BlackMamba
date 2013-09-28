@@ -15,8 +15,10 @@ import datetime
 
 from storm.expr import Desc
 # from storm.tracer import debug
+from storm.base import Storm
+from storm.references import Reference
 from storm.twisted.transact import transact
-from storm.locals import Storm, Int, Unicode, DateTime, Reference, ReferenceSet
+from storm.properties import Int, Unicode, DateTime
 
 from mamba.application import model
 
@@ -43,10 +45,21 @@ class Post(model.Model, Storm):
     # references
     author_email = Unicode(size=128)
     author = Reference(author_email, 'User.email')
-    comments = ReferenceSet('Post.id', 'Comment.post_id')
 
     def __init__(self):
         super(Post, self).__init__()
+
+    @transact
+    def read(self, id):
+        """Override read method of mamba.model.Model
+        """
+
+        store = self.database.store()
+        data = store.get(self.__class__, id)
+        post = self.copy(data)
+        post.author = User().copy(data.author)
+
+        return post
 
     @property
     @transact
@@ -73,6 +86,11 @@ class Post(model.Model, Storm):
         for post in result.config(offset=(offset - 1) * limit, limit=limit):
             copy = Post().copy(post)
             copy.author = User().copy(post.author)
+            readmore = True if len(copy.content) > 450 else False
+            if readmore:
+                copy.content = copy.content[:len(copy.content) / 2]
+
+            copy.readmore = readmore
             posts.append(copy)
 
         return posts, total_posts

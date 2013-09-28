@@ -13,14 +13,36 @@
 from twisted.internet import defer
 from zope.interface import implementer
 
+from authomatic import Authomatic
+from authomatic.adapters import MambaAdapter
+from authomatic.providers import oauth2, oauth1
+assert oauth1, oauth2
+
 from mamba.utils import config
 from mamba.web.response import Ok
 from mamba.application import route
+from mamba.web.response import Response
 from mamba.core import interfaces, templating
 from mamba.application.controller import Controller
 
 from application import controller
 from application.model.post import Post
+
+
+def normalize_json_config():
+    """Convert class_ string in JSON config to valid auth-o-matic instances
+    """
+
+    data = config.Application().blog['login']
+
+    for service in data:
+        data[service]['class_'] = eval(data[service]['class_'])
+
+
+normalize_json_config()
+authomatic = Authomatic(
+    config.Application().blog['login'], 'mamba rocks w000t!'
+)
 
 
 @implementer(interfaces.IController)
@@ -50,6 +72,11 @@ class Blog(Controller):
         except (ValueError, TypeError):
             offset = 1
 
+        session = request.getSession()
+        session.referer = '{}?page={}'.format(
+            request.prePathURL(), kwargs.get('page', 1)
+        )
+
         controller.toggle_menu(controller.BLOG)
         template_args = controller.template_args
 
@@ -64,6 +91,21 @@ class Blog(Controller):
             offset, limit, total
         )
 
+        defer.returnValue(
+            Ok(self.template.render(**template_args).encode('utf8')))
+
+    @route('/<int:post_id>', method='GET')
+    @defer.inlineCallbacks
+    def read(self, request, post_id, **kwargs):
+        """Read an specific post
+        """
+
+        session = request.getSession()
+        controller.toggle_menu(controller.BLOG)
+        template_args = controller.template_args
+
+        template_args['referer'] = session.__dict__.get('referer', '')
+        template_args['post'] = yield Post().read(post_id)
         defer.returnValue(
             Ok(self.template.render(**template_args).encode('utf8')))
 

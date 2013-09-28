@@ -22,12 +22,12 @@ from application.lib.ssl import WebClientContextFactory
 from application.lib.web_client import DownloaderProtocol
 
 # platforms
-INDEPENDENT = bitvector.BV00
-UNIX = bitvector.BV01
-WINDOWS = bitvector.BV02
-OSX = bitvector.BV03
-FREEBSD = bitvector.BV04
-LINUX = bitvector.BV05
+INDEPENDENT = bitvector.BV0
+UNIX = bitvector.BV1
+WINDOWS = bitvector.BV2
+OSX = bitvector.BV3
+FREEBSD = bitvector.BV4
+LINUX = bitvector.BV5
 
 
 class File(model.Model, Storm):
