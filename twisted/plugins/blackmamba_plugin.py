@@ -1,4 +1,4 @@
-from zope.interface import implements
+from zope.interface import implementer
 
 from twisted.python import usage
 from twisted.plugin import IPlugin
@@ -21,8 +21,8 @@ class Options(usage.Options):
     ]
 
 
+@implementer(IServiceMaker, IPlugin)
 class MambaServiceMaker(object):
-    implements(IServiceMaker, IPlugin)
     tapname = settings.name.lower()
     description = settings.description
     options = Options
