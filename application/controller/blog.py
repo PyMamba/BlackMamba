@@ -11,41 +11,17 @@
 """
 
 from twisted.internet import defer
-from zope.interface import implementer
-
-from authomatic import Authomatic
-from authomatic.adapters import MambaAdapter
-from authomatic.providers import oauth2, oauth1
-assert oauth1, oauth2
 
 from mamba.utils import config
 from mamba.web.response import Ok
+from mamba.core import templating
 from mamba.application import route
-from mamba.web.response import Response
-from mamba.core import interfaces, templating
 from mamba.application.controller import Controller
 
 from application import controller
 from application.model.post import Post
 
 
-def normalize_json_config():
-    """Convert class_ string in JSON config to valid auth-o-matic instances
-    """
-
-    data = config.Application().blog['login']
-
-    for service in data:
-        data[service]['class_'] = eval(data[service]['class_'])
-
-
-normalize_json_config()
-authomatic = Authomatic(
-    config.Application().blog['login'], 'mamba rocks w000t!'
-)
-
-
-@implementer(interfaces.IController)
 class Blog(Controller):
     """
     Blog controller from BlackMamba

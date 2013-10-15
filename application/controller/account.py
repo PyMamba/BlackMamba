@@ -16,12 +16,10 @@ from hashlib import sha512
 
 from twisted.python import log
 from twisted.web.client import Agent
-from zope.interface import implementer
 from twisted.internet import defer, reactor
 from twisted.web.http_headers import Headers
 
 from mamba.web.response import Ok
-from mamba.core import interfaces
 from mamba.application import route
 from mamba.application import controller
 from mamba.utils.checkers import Checkers
@@ -31,7 +29,6 @@ from application.lib.permissions import authed
 from application.lib.ssl import WebClientContextFactory
 
 
-@implementer(interfaces.IController)
 class Account(controller.Controller):
     """
     User and session related stuff

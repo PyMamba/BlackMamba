@@ -8,6 +8,7 @@
     "development": true,
     "contact_recipients": ["mamba-support@googlegroups.com"],
     "git_repository": "https://github.com/DamnWidget/mamba",
+    "old_releases": ["0.3.4"],
     "blog": {
         "posts_limit": 5,
         "commets_enabled": true

@@ -1,0 +1,59 @@
+<!--
+    Copyright (c) 2013 - Oscar Campos <oscar.campos@member.fsf.org>
+
+    view: PostsBase
+        synopsis: Base layout for blog posts
+
+    viewauthor: Oscar Campos <oscar.campos@member.fsf.org>
+-->
+
+
+{% block post %}
+<div class="post">
+    {% if mode == 'root' %}
+    <h2 class="post-title text-left"><a href="/blog/{{ post.id }}">{{ post.title }}</a></h2>
+    {% else %}
+    <h2 class="post-title text-left">{{ post.title }}</h2>
+    {% endif %}
+
+    <div class="row-fluid post-header">
+        <div class="span6">
+            <p class="text-left written">
+                <em>Written on </em>{{ post.publish_date }} <em>by</em> <a href="/users/{{ post.author.name }}">{{ post.author.name }}</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+
+        <div class="span12">
+            <div class="post-body text-left">
+                {% if post.image %}
+                <img src="/{{ post.image }}" class="post-{{ mode }}-image img-round" alt="">
+                {% endif %}
+                {{ post.content }}{% if post.readmore == True %}... <a href="/blog/{{ post.id }}">read more</a>{% endif %}
+            </div>
+
+            <div class="row-fluid">
+                <div class="span6">
+                {% if mode == 'read' %}
+                    <p class="text-left back">
+                        <a href="{{ referer }}"><em>go back</em></a>
+                    </p>
+                {% endif %}
+                </div>
+                <div class="span6">
+                    {% if post.last_update %}
+                    <p class="text-right last-edit">
+                        <em>...last edition {{ post.last_update }}</em>
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- post -->
+{% endblock %}

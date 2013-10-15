@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+  {% block content %}
+  {{ super() }}
+
+  <!--
+    Copyright (c) 2013 - Oscar Campos <oscar.campos@member.fsf.org>
+
+    view: Root
+      synopsis: Root view for Blogs controller
+
+    viewauthor: Oscar Campos <oscar.campos@member.fsf.org>
+  -->
+
+  {% set mode = 'root' %}
+
+  <div class="container">
+
+    <div class="introduction blog">
+      <h1>Blog Entries</h1>
+      <p class="caption">Just our thoughts...</p>
+
+      <div class="row-fluid">
+        <div class="span12">
+
+          <div class="row-fluid">
+
+            {% for post in posts %}
+            {% include "posts_base.html" %}
+            {% endfor %}
+
+            {% if pagination %}
+            <div class="row-fluid">
+
+              <div class="pagination">
+                <ul>
+                {% for page in pagination %}
+                  {% if page.class %}
+                    <li class="{{ page.class }}">
+                  {% else %}
+                    <li>
+                  {% endif %}
+                  {% if page.link %}
+                    <a href="blog?page={{ page.number }}">{{ page.name }}</a>
+                  {% else %}
+                    <span>{{ page.name }}</span>
+                  {% endif %}
+                    </li>
+                {% endfor %}
+                </ul>
+              </div>
+
+            </div>
+            {% endif %}
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  {% endblock %}

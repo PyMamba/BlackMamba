@@ -10,33 +10,35 @@
 .. controllerauthor:: Oscar Campos <oscar.campos@member.fsf.org>
 """
 
-from twisted.internet import defer
-from zope.interface import implementer
 
-from mamba.web.response import Ok
+from twisted.internet import defer
+
+from mamba.utils import config
+from mamba.core import templating
 from mamba.application import route
-from mamba.core import interfaces, templating
+from mamba.web.response import Ok, Found, NotFound
 from mamba.application.controller import Controller
 
 from application import controller
-from application.model.file import File
-from application.model.release import Release
+from application.lib import web_client
 
 
-@implementer(interfaces.IController)
 class Downloads(Controller):
     """
     Download controller from BlackMamba
     """
 
     name = 'Downloads'
-    loaded = False
     __route__ = 'download'
+    package_type = {
+        'sdist': 'source', 'bdist_wininst': 'win executable', 'bdist': 'egg'
+    }
+    platforms = {'sdist': 'independent', 'bdist_wininst': 'windows'}
 
     def __init__(self):
+        """Constructor
         """
-        Put your initialization code here
-        """
+
         super(Downloads, self).__init__()
         self.template = templating.Template(controller=self)
 
@@ -49,43 +51,64 @@ class Downloads(Controller):
         controller.toggle_menu(controller.DOWNLOAD)
         template_args = controller.template_args
 
-        template_args['releases'] = yield Release().last_release_files()
-        template_args['old_releases'] = yield Release().old_release_files()
+        template_args['releases'] = yield self.generate_releases()
+        template_args['old_releases'] = yield self.generate_old_releases()
 
         defer.returnValue(
             Ok(self.template.render(**template_args).encode('utf-8')))
 
-    @route('/latest/<type>')
+    @route('/latest')
     @defer.inlineCallbacks
-    def latest(self, request, type, **kwargs):
+    def latest(self, request, **kwargs):
         """Start a download process for the latest mamba version
         """
 
-        release = yield Release().last
-        source = None
-        for f in release:
-            if f.type_string() == type:
-                source = f
+        pypi_data = yield web_client.PyPIParser().retrieve_pypi_json_data()
 
-        source.update_downloads()
+        for release in pypi_data['urls']:
+            if release['packagetype'] == 'sdist':
+                defer.returnValue(Found(str(release['url'])))
 
-        request.setHeader('cache-control', 'public')
-        request.setHeader('content-type', 'application/octet-stream')
+        defer.returnValue(NotFound())
 
-        request.setHeader(
-            'content-disposition',
-            'attachment; filename={}'.format(source.name))
-
-        with open('releases/' + source.name, 'rb') as last:
-            data = last.read()
-
-        defer.returnValue(data)
-
-    @route('/digest/<int:file_id>')
     @defer.inlineCallbacks
-    def digest(self, request, file_id, **kwargs):
-        """Return back a string with the given file MD5
+    def generate_releases(self):
+        """Generate releases
         """
 
-        file = yield File().read(file_id, True)
-        defer.returnValue(str(file.md5_sum) if file is not None else '')
+        releases = []
+        pypi_data = yield web_client.PyPIParser().retrieve_pypi_json_data()
+
+        for release in pypi_data['urls']:
+            releases.append(self._prepare_release_data(release))
+
+        defer.returnValue(releases)
+
+    @defer.inlineCallbacks
+    def generate_old_releases(self):
+        """Generate old releases
+        """
+
+        releases = []
+        for version in config.Application().old_releases:
+            pypi_data = yield web_client.PyPIParser().retrieve_pypi_json_data(
+                version)
+            for release in pypi_data['urls']:
+                releases.append(self._prepare_release_data(release))
+
+        defer.returnValue(releases)
+
+    def _prepare_release_data(self, release):
+        """Prepare the release dictionary
+        """
+
+        return {
+            'name': release['filename'],
+            'md5': release['md5_digest'],
+            'link': release['url'],
+            'type_string': self.package_type[release['packagetype']],
+            'platforms_string': self.platforms[release['packagetype']],
+            'size': release['size'],
+            'release_date': release['upload_time'],
+            'downloads': release['downloads']
+        }

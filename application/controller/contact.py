@@ -11,26 +11,23 @@
 """
 
 from twisted.internet import defer
-from zope.interface import implementer
 
+from mamba.core import templating
 from mamba.application import route
 from mamba.utils.config import Application
 from mamba.web.response import Ok, BadRequest
-from mamba.core import interfaces, templating
 from mamba.application.controller import Controller
 
 from application.lib import smtp
 from application import controller
 
 
-@implementer(interfaces.IController)
 class Contact(Controller):
     """
     Contact Controller
     """
 
     name = 'Contact'
-    # loaded = False
     __route__ = 'contact'
 
     def __init__(self):

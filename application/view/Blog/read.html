@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+    {% block content %}
+    {{ super() }}
+
+    <!--
+        Copyright (c) 2013 - Oscar Campos <oscar.campos@member.fsf.org>
+
+        view: Read
+            synopsis: Read a single post
+
+        viewauthor: Oscar Campos <oscar.campos@member.fsf.org>
+    -->
+
+    {% set mode = 'read' %}
+
+    <div class="container">
+
+        <div class="introduction blog">
+            <h1>Blog Entries</h1>
+            <p class="caption">Just our thoughts...</p>
+
+            <div class="row-fluid">
+
+                <div class="span12">
+
+                    <div class="row-fluid">
+
+                        {% include "posts_base.html" %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+                var disqus_shortname = 'pymamba';
+
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+                    dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+        </div>
+
+    </div>
+
+    {% endblock %}

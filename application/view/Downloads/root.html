@@ -48,9 +48,9 @@
                       {% for item in releases %}
                         <tr>
                           <td><a href="{{ item.link }}">{{ item.name }}</a></td>
-                          <td>(<a href="{{ item.md5 }}">md5</a>)</td>
-                          <td>{{ item.type_string() }}</td>
-                          <td>{{ item.platforms_string() }}</td>
+                          <td>(<a class="cursor-pointer" onClick="alert('{{ item.md5 }}');">md5</a>)</td>
+                          <td>{{ item.type_string }}</td>
+                          <td>{{ item.platforms_string }}</td>
                           <td>{{ item.size // 1024 }}kb</td>
                           <td>{{ item.release_date }}</td>
                           <td><p class="text-right">{{ item.downloads }}</p></td>
@@ -76,33 +76,16 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {% for release in old_releases %}
-                        <!-- <tr>
-                          <td colspan="7"><h5>Release v{{ release['release'].version }}</h5></td>
-                        </tr> -->
-                        {% for item in release['files'] %}
-                          <tr>
-                            <td><a href="{{ item.link }}">{{ item.name }}</a></td>
-                            {% if item.md5 %}
-                              <td>(<a href="{{ item.md5 }}">md5</a>)</td>
-                            {% else %}
-                              <td></td>
-                            {% endif %}
-                            <td>{{ item.type_string() }}</td>
-                            <td>{{ item.platforms_string() }}</td>
-                            <td>{{ item.size }}</td>
-                            {% if item.release_date %}
-                              <td>{{ item.release_date }}</td>
-                            {% else %}
-                              <td>check on github</td>
-                            {% endif %}
-                            {% if item.donwloads %}
-                              <td>{{ item.downloads }}</td>
-                            {% else %}
-                              <td>Not available</td>
-                            {% endif %}
-                          </tr>
-                        {% endfor %}
+                      {% for item in old_releases %}
+                        <tr>
+                          <td><a href="{{ item.link }}">{{ item.name }}</a></td>
+                          <td>(<a class="cursor-pointer" onClick="alert('{{ item.md5 }}');">md5</a>)</td>
+                          <td>{{ item.type_string }}</td>
+                          <td>{{ item.platforms_string }}</td>
+                          <td>{{ item.size // 1024 }}kb</td>
+                          <td>{{ item.release_date }}</td>
+                          <td><p class="text-right">{{ item.downloads }}</p></td>
+                        </tr>
                       {% endfor %}
                     </tbody>
                   </table>

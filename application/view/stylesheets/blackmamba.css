@@ -78,6 +78,7 @@ body > .navbar .nav > .active > a:focus {
 .mamba .container {
     position: relative;
     z-index: 2;
+
 }
 
 .header {
@@ -107,6 +108,10 @@ body > .navbar .nav > .active > a:focus {
     left: 0;
     background: url(../assets/mamba-bg.png) repeat center center;
     opacity: .15;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }
 
 .github {
@@ -208,18 +213,24 @@ body > .navbar .nav > .active > a:focus {
   margin-bottom: 60px;
 }
 
-.blog p.last-edit {
+.blog p.last-edit, .blog p.back {
   font-size: 12px;
-  margin-top: 12px;
+  margin-top: 60px;
 }
 
 .blog p.written {
   font-size: 14px;
 }
 
-.blog .post-image {
+.blog .post-read-image {
   margin: 24px;
   float: left;
+}
+
+.blog .post-root-image {
+  margin: 6px;
+  float: left;
+  width: 10%;
 }
 
 .blog .post-body {
@@ -232,6 +243,11 @@ body > .navbar .nav > .active > a:focus {
 
 .blog .pagination {
   margin-top: 60px;
+}
+
+.blog #disqus_thread {
+  border-top: solid 1px rgba(0, 0, 0, 0.1);
+  padding-top: 20px;
 }
 
 
