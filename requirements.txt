@@ -1,0 +1,13 @@
+Jinja2==2.7.1
+MarkupSafe==0.18
+Twisted==13.1.0
+psycopg2==2.4.6
+pyOpenSSL==0.13.1
+singledispatch==3.4.0.2
+six==1.4.1
+storm==0.20
+transaction==1.4.1
+wsgiref==0.1.2
+zope.component==4.1.0
+zope.event==4.0.2
+zope.interface==4.0.5
