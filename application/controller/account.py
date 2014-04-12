@@ -48,7 +48,7 @@ class Account(controller.Controller):
     def root(self, request, **kwargs):
         return Ok('I am the Account, hello world!')
 
-    @route('/sign_in/<email>/<key>', method='POST')
+    @route('/sign_in', method='POST')
     @defer.inlineCallbacks
     def sign_in(self, request, email, key, **kwargs):
         """Sign in into user's account
@@ -65,13 +65,14 @@ class Account(controller.Controller):
 
         log.msg('Attempting to sign in to user {email}'.format(email=email))
 
-        account = yield User().sign_in(email, sha512(key).hexdigest())
+        account = yield User().sign_in(
+            unicode(email), unicode(sha512(key).hexdigest()))
         if account is not None:
             log.msg('Found user {email}'.format(email=email))
-            log.msg('Authenticating session {uuid}'.format(uuid=session.uuid))
+            log.msg('Authenticating session {uuid}'.format(uuid=session.uid))
             session.authenticate()
             session.user = account
-            defer.returnValue({'success': True, 'session_id': session.uuid})
+            defer.returnValue({'success': True, 'session_id': session.uid})
         else:
             log.msg('Account don\'t exists or invalid key!')
             defer.returnValue({'success': False, 'msg': 'Invalid credentials'})
@@ -83,7 +84,7 @@ class Account(controller.Controller):
         """
 
         session = request.getSession()
-        if session.uuid == uuid:
+        if session.uid == uuid:
             log.msg('Disconnecting session {uuid} for account {email}'.format(
                 uuid=uuid, email=session.user.email
             ))
@@ -95,7 +96,7 @@ class Account(controller.Controller):
         else:
             log.msg(
                 'sign_out called with uid {uuid} but session.uuid '
-                'is {session_id}'.format(uuid=uuid, session_id=session.uuid)
+                'is {session_id}'.format(uuid=uuid, session_id=session.uid)
             )
 
             result = {'success': False, 'msg': 'Unknown uid'}
