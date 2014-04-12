@@ -25,7 +25,7 @@ def sendmail(message, subject, sender, recipients, host):
     d = txsendmail(host, sender, recipients, msg.as_string())
 
     def cb_success(ignore):
-        log.msg('Email sended to {} (at least to the SMTP server)'.format(
+        log.msg('Email sent to {} (at least to the SMTP server)'.format(
             ', '.join(recipients))
         )
         return True
