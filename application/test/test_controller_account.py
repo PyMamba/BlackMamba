@@ -41,14 +41,14 @@ class ControllerAccountTest(unittest.TestCase):
 
     account = Account()
 
-    def generate_request_and_session(self, url, auth=None, uuid=None):
+    def generate_request_and_session(self, url, auth=None, uid=None):
         request = DummyRequest([url], {})
         session = Session(0, request)
 
         if auth is not None:
             session.is_authed = auth
-        if uuid is not None:
-            session.uuid = uuid
+        if uid is not None:
+            session.uid = uid
 
         request.session = session
 
@@ -73,9 +73,15 @@ class ControllerAccountTest(unittest.TestCase):
     @defer.inlineCallbacks
     def test_sign_works_on_valid_credentials(self):
 
-        url = '/sign_in/{}/{}'.format('valid@test.com', 'valid')
-
-        request = self.generate_request_and_session(url, uuid='73s7b33f')
+        request = self.generate_request(
+            ['/sign_in'], params='''{
+                "email": "valid@test.com",
+                "key": "valid"
+            }'''
+        )
+        session = Session(0, request)
+        session.uid = '73s7b33f'
+        request.session = session
         result = yield self.account.render(request)
 
         self.assertEqual(result.code, http.OK)
@@ -87,9 +93,13 @@ class ControllerAccountTest(unittest.TestCase):
     @defer.inlineCallbacks
     def test_sign_works_on_invalid_credentials(self):
 
-        url = '/sign_in/{}/{}'.format('invalid@test.com', 'invalid')
-
-        request = self.generate_request_and_session(url)
+        request = self.generate_request(
+            ['/sign_in'], params='''{
+                "email": "invalid@test.com",
+                "key": "invalid"
+            }'''
+        )
+        request.session = Session(0, request)
         result = yield self.account.render(request)
 
         self.assertEqual(result.code, http.OK)
@@ -115,7 +125,7 @@ class ControllerAccountTest(unittest.TestCase):
         url = '/sign_out/{}'.format('one')
 
         request = self.generate_request_and_session(
-            url, auth=lambda: True, uuid='two'
+            url, auth=lambda: True, uid='two'
         )
         result = yield self.account.render(request)
 
@@ -132,7 +142,7 @@ class ControllerAccountTest(unittest.TestCase):
         user_tuple = ctuple('valid@test.com')
 
         request = self.generate_request_and_session(
-            url, auth=lambda: True, uuid='73s7b33f')
+            url, auth=lambda: True, uid='73s7b33f')
         request.session.user = user_tuple
         request.session.expire = lambda: None
         result = yield self.account.render(request)
@@ -258,7 +268,7 @@ class ControllerAccountTest(unittest.TestCase):
 
         url = '/delete/b4d535102'
         request = self.generate_request_and_session(
-            url, auth=lambda: False, uuid='73s7b33f'
+            url, auth=lambda: False, uid='73s7b33f'
         )
 
         result = yield self.account.render(request)
@@ -271,7 +281,7 @@ class ControllerAccountTest(unittest.TestCase):
 
         url = '/delete/key'
         request = self.generate_request_and_session(
-            url, auth=lambda: True, uuid='73s7b33f'
+            url, auth=lambda: True, uid='73s7b33f'
         )
         ctuple = namedtuple('named_user', 'email key')
         user_tuple = ctuple('valid@test.com', 'key2')
@@ -300,7 +310,7 @@ class ControllerAccountTest(unittest.TestCase):
 
         url = '/delete/key'
         request = self.generate_request_and_session(
-            url, auth=lambda: True, uuid='73s7b33f'
+            url, auth=lambda: True, uid='73s7b33f'
         )
         request.session.user = user_tuple
         request.session.expire = lambda: True
@@ -309,3 +319,24 @@ class ControllerAccountTest(unittest.TestCase):
 
         self.assertEqual(result.code, http.OK)
         self.assertEqual(result.subject['success'], True)
+
+    @defer.inlineCallbacks
+    def test_check_services_account_twitter(self):
+
+        response = yield self.account._check_services_account(
+            '@damnwidget', 'twitter')
+        self.assertEqual(response.code, 200)
+
+    @defer.inlineCallbacks
+    def test_check_services_account_github(self):
+
+        response = yield self.account._check_services_account(
+            'DamnWidget', 'github')
+        self.assertEqual(response.code, 200)
+
+    @defer.inlineCallbacks
+    def test_check_services_account_bitbucket(self):
+
+        response = yield self.account._check_services_account(
+            'damnwidget', 'bitbucket')
+        self.assertEqual(response.code, 200)
