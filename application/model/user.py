@@ -36,7 +36,7 @@ class User(model.Model, Storm):
     last_login = DateTime()
 
     # references
-    posts = ReferenceSet('User.id', 'Post.id')
+    posts = ReferenceSet('User.email', 'Post.author_email')
 
     def __init__(self):
         super(User, self).__init__()
